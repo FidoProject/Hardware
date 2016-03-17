@@ -1,6 +1,6 @@
 # Hardware
 
-Robots that are trainable by humans. Each implementation uses the [Fido library](https://github.com/FidoProject/Fido) for its learning model and the cross-platform [Fido reward app](https://github.com/FidoProject/RewardApp) to recieve positive and negative feedback from humans. Experimental results from these two robots are published in the [Research repository](https://github.com/FidoProject/Research).
+Robots that are trainable by humans. Each implementation uses the [Fido library](https://github.com/FidoProject/Fido) for its learning model and the cross-platform [Fido training app](https://github.com/FidoProject/TrainingApp) to recieve positive and negative feedback from humans. Experimental results from these two robots are published in the [Research repository](https://github.com/FidoProject/Research).
 
 ## Thing One
 
