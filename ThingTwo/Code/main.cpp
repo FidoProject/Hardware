@@ -6,7 +6,7 @@
 int main() {
     Hardware thingTwo;
 
-    thingTwo.setLED(121,30,29);
+    thingTwo.setMotors(100,100,100);
     sleep(2);
 
 

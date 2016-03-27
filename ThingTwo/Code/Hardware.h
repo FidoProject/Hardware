@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include <wiringPi.h>
 #include <softPwm.h>
@@ -11,6 +12,7 @@ class Hardware {
 public:
     Hardware();
     void setLED(int r, int g, int b);
+    void setMotors(int i, int j, int k);
     virtual ~Hardware();
 };
 
