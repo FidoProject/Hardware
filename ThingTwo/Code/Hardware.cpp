@@ -20,4 +20,6 @@ void Hardware::setLED(int r, int g, int b) {
 
 Hardware::~Hardware() {
     setLED(0,0,0);
+
+    usleep(100000);
 }

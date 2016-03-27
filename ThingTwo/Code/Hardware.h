@@ -1,10 +1,11 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
+#include <iostream>
+#include <unistd.h>
+
 #include <wiringPi.h>
 #include <softPwm.h>
-
-#include <iostream>
 
 class Hardware {
 public:
