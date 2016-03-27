@@ -1,4 +1,6 @@
 #include <iostream>
+#include <unistd.h>
+
 #include "Hardware.h"
 
 int main() {
