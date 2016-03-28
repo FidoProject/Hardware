@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-#include "Hardware.h"
+#include "../Hardware.h"
 #include "Fido/Fido.h"
 #include "../../../Connection.h"
 
@@ -105,7 +105,7 @@ void lineFollow() {
     
     std::cout << "Done with initialization\n";
     while(true) {
-        rl::Action action = learner.chooseBoltzmanAction({!hardware.isLeftOfLine() ? -1 : 1}, exploration);
+        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, exploration);
         std::cout << "Action: " << action[0] << "\n";
 
         hardware.goHolonomic(0, 50, action[0]*maxRotate);
@@ -114,11 +114,11 @@ void lineFollow() {
         
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
-        learner.applyReinforcementToLastAction(reward, {!hardware.isLeftOfLine() ? -1 : 1});
+        learner.applyReinforcementToLastAction(reward, {!isLeftOfLine(hardware) ? -1 : 1});
     }
 
     while(true) {
-        rl::Action action = learner.chooseBoltzmanAction({!hardware.isLeftOfLine() ? -1 : 1}, 0.001);
+        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, 0.001);
         hardware.goHolonomic(0, 50, action[0]*maxRotate);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
         std::cout << "Action: " << action[0] << "\n";
@@ -142,7 +142,7 @@ void lineFollowKiwi() {
     
     std::cout << "Done with initialization\n";
     while(true) {
-        rl::Action action = learner.chooseBoltzmanAction({!hardware.isLeftOfLine() ? -1 : 1}, exploration);
+        rl::Action action = learner.chooseBoltzmanAction({!!isLeftOfLine(hardware) ? -1 : 1}, exploration);
         std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
 
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
@@ -151,11 +151,11 @@ void lineFollowKiwi() {
         
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
-        learner.applyReinforcementToLastAction(reward, {!hardware.isLeftOfLine() ? -1 : 1});
+        learner.applyReinforcementToLastAction(reward, {!isLeftOfLine(hardware) ? -1 : 1});
     }
 
     while(true) {
-        rl::Action action = learner.chooseBoltzmanAction({!hardware.isLeftOfLine() ? -1 : 1}, 0.001);
+        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, 0.001);
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
         std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
