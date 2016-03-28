@@ -6,13 +6,14 @@
 int main() {
     Hardware thingTwo;
 
-    thingTwo.setMotors(100,-100,0);
+    thingTwo.goHolonomic(100,0,0);
+    sleep(1);
+    thingTwo.goHolonomic(0,-100,0);
+    sleep(1);
+    thingTwo.setMotors(-100,0,0);
     sleep(2);
-    thingTwo.setMotors(0,100,-100);
+    thingTwo.setMotors(0,100,0);
     sleep(2);
-    thingTwo.setMotors(-100,0,100);
-    sleep(2);
-
 
     return 0;
 }

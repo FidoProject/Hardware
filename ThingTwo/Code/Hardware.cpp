@@ -36,6 +36,15 @@ void Hardware::setLED(int r, int g, int b) {
     softPwmWrite(PIN_LED_B,b);
 }
 
+void goHolonomic(double x, double y, double r) {
+    double i = 0.5*(x - y*sqrt(3)) + r;
+    double j = 0.5*(x + y*sqrt(3)) + r;
+    double k = x + r;
+​
+    setMotors(i,j,k);
+}
+
+
 void Hardware::setMotors(int i, int j, int k) {
     digitalWrite(PIN_MOTOR_I_DIR,i>0);
     softPwmWrite(PIN_MOTOR_I_PWM,abs(i));
