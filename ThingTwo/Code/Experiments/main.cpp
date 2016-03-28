@@ -9,7 +9,9 @@
 
 // ---------------------- Helper Functions -----------------------
 bool isLeftOfLine(Hardware hardware) {
-    return hardware.readLine() < 4;
+    int lineVal = hardware.readLine();
+    std::cout << "Line val: " << lineVal << "\n";
+    return lineVal < 4;
 }
 
 // ---------------------- Experiments ----------------------------
@@ -144,6 +146,7 @@ void lineFollowKiwi() {
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({!!isLeftOfLine(hardware) ? -1 : 1}, exploration);
         std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
+        std::cout << "Is left of line: " << isLeftOfLine(hardware) << "\n";
 
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
