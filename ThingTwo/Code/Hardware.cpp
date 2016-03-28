@@ -4,7 +4,7 @@
 #define PIN_LED_G 13
 #define PIN_LED_B 10
 
-#define PIN_MOTOR_I_PWM 23
+#define PIN_MOTOR_I_PWM 22
 #define PIN_MOTOR_I_DIR 27
 #define PIN_MOTOR_J_PWM 24
 #define PIN_MOTOR_J_DIR 28
