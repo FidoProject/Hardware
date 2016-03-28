@@ -62,9 +62,9 @@ void goStraightKiwi() {
     std::cout << "Done with initialization\n";
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({1}, exploration);
-        std::cout << "Action: " << action[0] << "\n";
+        std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
 
-        hardware.setMotos(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
+        hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         hardware.setMotors(0, 0, 0);
         
@@ -75,7 +75,7 @@ void goStraightKiwi() {
 
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({1}, 0.001);
-        hardware.goHolonomic(0, 50, action[0]*maxRotate);
+        hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
         std::cout << "Action: " << action[0] << "\n";
     }
