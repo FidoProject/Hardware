@@ -37,11 +37,13 @@ void Hardware::setLED(int r, int g, int b) {
 }
 
 void Hardware::goHolonomic(int x, int y, int r) {
-    double i = 0.5*(x - y*sqrt(3)) + r;
-    double j = 0.5*(x + y*sqrt(3)) + r;
-    double k = x + r;
+    double i = y*sqrt(3)/2 + x/2 + r;
+    double j = y*sqrt(3)/2 - x/2 - r;
+    double k = x - r;
 
-    setMotors(i,j,k);
+    double coef = 100.0/(((i>j)?i:j)>k?((i>j)?i:j):k);
+
+    setMotors(i*coef,j*coef,k*coef);
 }
 
 void Hardware::setMotors(int i, int j, int k) {
