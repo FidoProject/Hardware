@@ -98,8 +98,10 @@ void Hardware::setMotors(int i, int j, int k) {
 }
 
 void Hardware::getZX(int& z, int& x) {
+    serialFlush(serialFileDesc);
+
     while (serialGetchar(serialFileDesc) != 0xFA);
-    x = serialGetchar(serialFileDesc);
+    x = serialGetchar(serialFileDesc) - 120;
 
     while (serialGetchar(serialFileDesc) != 0xFB);
     z = serialGetchar(serialFileDesc);
