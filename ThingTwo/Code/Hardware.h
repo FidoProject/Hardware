@@ -29,6 +29,7 @@ private:
     long long readLineSensor(int i);
     int lastLine;
     int serialFileDesc;
+    int imuFileDesc;
 };
 
 #endif /* HARDWARE_H_ */
