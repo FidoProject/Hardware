@@ -165,6 +165,48 @@ void lineFollowKiwi() {
     }
 }
 
+void ballFollow() {
+    double maxDisplacementComponent = 100;
+    double exploration = 0.2;
+
+    Connection connection;
+    int receiverNum;
+    do {
+        receiverNum = atoi(connection.getString().c_str());
+    } while(receiverNum != 5 && receiverNum != 6);
+
+    Hardware hardware;
+
+    rl::WireFitQLearn learner = rl::WireFitQLearn(2, 2, 1, 6, 4, {-1, -1}, {1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0.5);
+    learner.reset();
+    
+    std::cout << "Done with initialization\n";
+    while(true) {
+        int x, z;
+        hardware.getZX(&z, &x);
+
+        rl::Action action = learner.chooseBoltzmanAction({z / 240.0, x / 120.0}, exploration);
+        std::cout << "Action: " << action[0] << " " << action[1] << "\n";
+
+        hardware.goHolonomic(action[0]*maxDisplacementComponent, action[1]*maxDisplacementComponent, 0);
+        std::this_thread::sleep_for(std::chrono::milliseconds(400));
+        hardware.goHolonomic(0, 0, 0);
+        
+        double reward = connection.getReward();
+        if(fabs(reward - (-2)) < 0.001) break;
+
+        hardware.getZX(&z, &x);
+        learner.applyReinforcementToLastAction(reward, {z / 240.0, x / 120.0});
+    }
+
+    while(true) {
+        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, 0.001);
+        hardware.goHolonomic(action[0]*maxDisplacementComponent, action[1]*maxDisplacementComponent, 0);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::cout << "Action: " << action[0] << "\n";
+    }
+}
+
 int main() {
     lineFollow();
 
