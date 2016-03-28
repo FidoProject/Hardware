@@ -8,15 +8,15 @@ app = Flask(__name__, static_url_path='')
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(6, GPIO.OUT)
-m1 = GPIO.PWM(6,50)
+m1 = GPIO.PWM(6,100)
 GPIO.setup(16, GPIO.OUT)
 
 GPIO.setup(19, GPIO.OUT)
-m2 = GPIO.PWM(19,50)
+m2 = GPIO.PWM(19,100)
 GPIO.setup(20, GPIO.OUT)
 
 GPIO.setup(26, GPIO.OUT)
-m3 = GPIO.PWM(26,50)
+m3 = GPIO.PWM(26,100)
 GPIO.setup(21, GPIO.OUT)
 
 
@@ -35,6 +35,7 @@ def drive(i, j, k):
     GPIO.output(21,i<0)
     m3.ChangeDutyCycle(abs(k))
 
+    return 'ok'
 
 if __name__ == '__main__':
     m1.start(0)
