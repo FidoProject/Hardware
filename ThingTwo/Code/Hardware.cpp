@@ -61,6 +61,7 @@ long long Hardware::readLineSensor(int i) {
     usleep(10);
 
     pinMode(i,INPUT);
+    pullUpDnControl(i,PUD_OFF);
 
     auto start = std::chrono::high_resolution_clock::now();
     while (digitalRead(i));

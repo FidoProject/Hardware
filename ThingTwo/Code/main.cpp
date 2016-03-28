@@ -7,7 +7,7 @@ int main() {
     Hardware thingTwo;
 
     for (int i=0; i<5; i++) {
-        std::cout << thingTwo.readLine();
+        std::cout << "Reading " << i << ": " << thingTwo.readLine() << "\n";
         std::cout.flush();
 
         sleep(1);
