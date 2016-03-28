@@ -66,7 +66,8 @@ long long Hardware::readLineSensor(int i) {
     auto start = std::chrono::high_resolution_clock::now();
     while (digitalRead(i));
     auto elapsed = std::chrono::high_resolution_clock::now() - start;
-    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+    
+    return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
 }
 
 void Hardware::goHolonomic(int x, int y, int r) {
