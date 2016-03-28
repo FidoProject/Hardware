@@ -82,8 +82,8 @@ long long Hardware::readLineSensor(int i) {
 }
 
 void Hardware::goHolonomic(int x, int y) {
-    double i = x/2 + y*sqrt(3)/2;
-    double j = x/2 - y*sqrt(3)/2;
+    double i = x/2 - y*sqrt(3)/2;
+    double j = x/2 + y*sqrt(3)/2;
     double k = x;
 
     setMotors(i,j,k);
