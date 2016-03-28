@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <termios.h>
 
-#include "Code/Hardware.h"
+#include "../Hardware.h"
 
 char getch() {
     char buf = 0;
@@ -34,9 +34,10 @@ int main() {
         else if (input == 'd') x += 100;
         else if (input == 'w') y += 100;
         else if (input == 's') y -= 100;
-        else if (input == 'q') r -= 100;
-        else if (input == 'e') r += 100;
-        else if (iput == ' ') break;
+        else if (input == 'q') r += 100;
+        else if (input == 'e') r -= 100;
+        else if (input == ' ') break;
+        else x = y = r = 0;
 
         thingTwo.goHolonomic(x,y,r);
     }

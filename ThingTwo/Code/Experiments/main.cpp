@@ -5,7 +5,7 @@
 
 #include "Hardware.h"
 #include "Fido/Fido.h"
-#include "../../Connection.h"
+#include "../../../Connection.h"
 
 // ---------------------- Helper Functions -----------------------
 bool isLeftOfLine(Hardware hardware) {
