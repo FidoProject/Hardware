@@ -5,7 +5,6 @@
 
 class Connection {
 public:
-	const int PORT = 2004;
 	int socketFd;
 
 	Connection();
