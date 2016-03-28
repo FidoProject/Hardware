@@ -13,7 +13,9 @@
 #include <softTone.h>
 
 class Hardware {
-public:
+public: 
+    int lastLine;
+
     Hardware();
     void setLED(int r, int g, int b);
     void setMotors(int i, int j, int k);
@@ -26,7 +28,6 @@ private:
     static const int LINE_SENSORS[];
     long long readLineSensor(int i);
     int serialFileDesc;
-    int lastLine;
 };
 
 #endif /* HARDWARE_H_ */

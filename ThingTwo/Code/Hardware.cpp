@@ -17,9 +17,8 @@
 
 const int Hardware::LINE_SENSORS[] = {6,7,5,3,4,2,0,1};
 
-Hardware::Hardware() {
+Hardware::Hardware() : lastLine(0) {
     std::cout << "INITIALIZING HARDWARE\n"; std::cout.flush();
-    lastLine = 0;
     
     wiringPiSetup();
 
@@ -55,7 +54,7 @@ void Hardware::setLED(int r, int g, int b) {
 }
 
 int Hardware::readLine() {
-    std::cout << "Startin line val: " << lastLine << "\n";
+    std::cout << "Startin line val: " << this->lastLine << "\n";
     
     digitalWrite(PIN_LINE_LED,1);
     usleep(200);
@@ -71,10 +70,10 @@ int Hardware::readLine() {
         }
     } 
     std::cout << "Longest: " << longest << "\n";
-    if (longest > 1000) lastLine = longPin;
+    if (longest > 1000) this->lastLine = longPin;
     
-    std::cout << "Ending line val: " << lastLine << "\n";
-    return lastLine;
+    std::cout << "Ending line val: " << this->lastLine << "\n";
+    return this->lastLine;
 }
 
 long long Hardware::readLineSensor(int i) {
