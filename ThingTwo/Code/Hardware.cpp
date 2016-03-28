@@ -46,11 +46,11 @@ int Hardware::readLine() {
     digitalWrite(PIN_LINE_LED,1);
     usleep(200);
 
-    long long longest = readLineSensor(0);
+    long long longest = 0;
     int longPin = 0;
-    for (int i=1; i<8; i++) {
+    for (int i=0; i<8; i++) {
         long long iTime = (readLineSensor(LINE_SENSORS[i]) + readLineSensor(LINE_SENSORS[i]))/2;
-        if (iTime < longest) {
+        if (iTime > longest) {
             longest = iTime;
             longPin = i;
         }
