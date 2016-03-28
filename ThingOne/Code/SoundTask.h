@@ -3,7 +3,7 @@
 
 #include "../Software/Tasks/Task.h"
 #include "Hardware.h"
-#include "Connection.h"
+#include "../../Connection.h"
 
 class SoundTask : public Task {
 public:

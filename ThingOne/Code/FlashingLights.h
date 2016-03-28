@@ -3,7 +3,7 @@
 
 #include "Task.h"
 #include "Hardware.h"
-#include "Connection.h"
+#include "../Connection.h"
 
 class Simlink;
 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Hardware.h"
-#include "Connection.h"
+#include "../../Connection.h"
 #include "FlashingLights.h"
 #include "../Software/WireFitRobot.h"
 #include <stdlib.h>
