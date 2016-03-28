@@ -36,7 +36,7 @@ void Hardware::setLED(int r, int g, int b) {
     softPwmWrite(PIN_LED_B,b);
 }
 
-void goHolonomic(double x, double y, double r) {
+void Hardware::goHolonomic(int x, int y, int r) {
     double i = 0.5*(x - y*sqrt(3)) + r;
     double j = 0.5*(x + y*sqrt(3)) + r;
     double k = x + r;

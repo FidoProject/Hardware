@@ -13,6 +13,7 @@ public:
     Hardware();
     void setLED(int r, int g, int b);
     void setMotors(int i, int j, int k);
+    void goHolonomic(int x, int y, int r);
     virtual ~Hardware();
 };
 
