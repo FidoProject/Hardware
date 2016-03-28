@@ -6,7 +6,7 @@
 int main() {
     Hardware thingTwo;
 
-    while (true)
+    while (true) {
         std::cout << thingTwo.readLine() << "\n";
         std::cout.flush();
         usleep(500000);
