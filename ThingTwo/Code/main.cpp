@@ -7,7 +7,10 @@ int main() {
     Hardware thingTwo;
 
     while (true) {
-        std::cout << thingTwo.readLine() << "\n";
+        int z, x;
+        thingTwo.getZX(z,x);
+
+        std::cout << "Z: " << z << ", X: " << x << "\n";
         std::cout.flush();
         usleep(500000);
     }

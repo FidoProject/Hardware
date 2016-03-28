@@ -9,6 +9,7 @@
 
 #include <wiringPi.h>
 #include <softPwm.h>
+#include <wiringSerial.h>
 
 class Hardware {
 public:
@@ -17,10 +18,12 @@ public:
     void setMotors(int i, int j, int k);
     void goHolonomic(int x, int y, int r);
     int readLine();
+    void getZX(int& z, int& x);
     virtual ~Hardware();
 private:
     static const int LINE_SENSORS[];
     long long readLineSensor(int i);
+    int serialFileDesc;
 };
 
 #endif /* HARDWARE_H_ */

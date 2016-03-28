@@ -33,7 +33,11 @@ Hardware::Hardware() {
     pinMode(PIN_MOTOR_J_DIR,OUTPUT);
     pinMode(PIN_MOTOR_K_DIR,OUTPUT);
 
+    // initialize line sensor array LED
     pinMode(PIN_LINE_LED,OUTPUT);
+
+    // open serial line
+    serialFileDesc = serialOpen("/dev/ttyAMA0",115200);
 }
 
 void Hardware::setLED(int r, int g, int b) {
@@ -93,9 +97,19 @@ void Hardware::setMotors(int i, int j, int k) {
     softPwmWrite(PIN_MOTOR_K_PWM,abs(k));
 }
 
+void Hardware::getZX(int& z, int& x) {
+    while (serialGetchar(serialFileDesc) != 0xFA);
+    x = serialGetChar(serialFileDesc);
+
+    while (serialGetchar(serialFileDesc) != 0xFB);
+    z = serialGetChar(serialFileDesc);
+}
+
 Hardware::~Hardware() {
     setLED(0,0,0);
     setMotors(0,0,0);
+    digitalWrite(PIN_LINE_LED,0);
+    serialClose(serialFileDesc);
 
     usleep(100000);
 }
