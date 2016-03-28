@@ -8,7 +8,7 @@
 #include "../../../Connection.h"
 
 // ---------------------- Helper Functions -----------------------
-bool isLeftOfLine(Hardware hardware) {
+bool isLeftOfLine(Hardware &hardware) {
     int lineVal = hardware.readLine();
     std::cout << "Line val: " << lineVal << "\n";
     return lineVal < 4;
