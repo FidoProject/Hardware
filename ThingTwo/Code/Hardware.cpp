@@ -15,10 +15,12 @@
 
 #define PIN_BUZZER 11
 
+#define I2C_ADR_IMU 0x6B
+
 const int Hardware::LINE_SENSORS[] = {6,7,5,3,4,2,0,1};
 
 Hardware::Hardware() : lastLine(0) {
-    
+
     wiringPiSetup();
 
     /// initialize LED software pwms
@@ -44,6 +46,12 @@ Hardware::Hardware() : lastLine(0) {
 
     // initialize buzzer
     softToneCreate(PIN_BUZZER);
+
+    // initialize the IMU
+    wiringPiI2CSetup(I2C_ADR_GACC);
+    wiringPiI2CWriteReg8(I2C_ADR_IMU,0x10,0x80);
+    wiringPiI2CWriteReg8(I2C_ADR_IMU,0x11,0x80);
+    wiringPiI2CWriteReg8(I2C_ADR_IMU,0x12,0x04);
 }
 
 void Hardware::setLED(int r, int g, int b) {
@@ -64,10 +72,10 @@ int Hardware::readLine() {
             longest = iTime;
             longPin = i;
         }
-    } 
-    if (longest > 1000) this->lastLine = longPin;
-    
-    return this->lastLine;
+    }
+    if (longest > 1000) lastLine = longPin;
+
+    return lastLine;
 }
 
 long long Hardware::readLineSensor(int i) {
@@ -116,6 +124,15 @@ void Hardware::getZX(int& z, int& x) {
 
 void Hardware::setBuzzer(int freq) {
     softToneWrite(PIN_BUZZER,freq);
+}
+
+int Hardware::getGyro() {
+    wiringPiI2CWrite(I2C_ADR_IMU,0x22);
+    uint8_t rVals[6];
+    for (int i=0; i<6; i++) rVals[i] = wiringPiI2CRead(I2C_ADR_IMU);
+    int16_t vals[3];
+    for (int i=0; i<3; i++) vals[i] = (int16_t)(rVals[i+1] << 8 | rVals[i]);
+    return vals[0];
 }
 
 Hardware::~Hardware() {

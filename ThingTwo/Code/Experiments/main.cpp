@@ -30,7 +30,7 @@ void goStraight() {
 
     rl::WireFitQLearn learner = rl::WireFitQLearn(1, 1, 1, 3, 4, {-1}, {1}, 11, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.1, 35000), 0.95, 0.4);
     learner.reset();
-    
+
     std::cout << "Done with initialization\n";
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({1}, exploration);
@@ -39,7 +39,7 @@ void goStraight() {
         hardware.goHolonomic(0, 50, action[0]*maxRotate);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         hardware.goHolonomic(0, 0, 0);
-        
+
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
         learner.applyReinforcementToLastAction(reward, {1});
@@ -67,7 +67,7 @@ void goStraightKiwi() {
 
     rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.1, 35000), 0.95, 0.4);
     learner.reset();
-    
+
     std::cout << "Done with initialization\n";
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({1}, exploration);
@@ -76,7 +76,7 @@ void goStraightKiwi() {
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         hardware.setMotors(0, 0, 0);
-        
+
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
         learner.applyReinforcementToLastAction(reward, {1});
@@ -104,7 +104,7 @@ void lineFollow() {
 
     rl::WireFitQLearn learner = rl::WireFitQLearn(1, 2, 1, 6, 4, {-1, -1}, {1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0.5);
     learner.reset();
-    
+
     std::cout << "Done with initialization\n";
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, exploration);
@@ -113,7 +113,7 @@ void lineFollow() {
         hardware.goHolonomic(action[0]*maxDisplacementComponent, action[1]*maxDisplacementComponent, 0);
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
         hardware.goHolonomic(0, 0, 0);
-        
+
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
         learner.applyReinforcementToLastAction(reward, {!isLeftOfLine(hardware) ? -1 : 1});
@@ -141,7 +141,7 @@ void lineFollowKiwi() {
 
     rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.1, 35000), 0.95, 0.4);
     learner.reset();
-    
+
     std::cout << "Done with initialization\n";
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({!!isLeftOfLine(hardware) ? -1 : 1}, exploration);
@@ -151,7 +151,7 @@ void lineFollowKiwi() {
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         hardware.setMotors(0, 0, 0);
-        
+
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
         learner.applyReinforcementToLastAction(reward, {!isLeftOfLine(hardware) ? -1 : 1});
@@ -208,7 +208,13 @@ void ballFollow() {
 }
 
 int main() {
-    lineFollow();
+    //lineFollow();
+
+    Hardware hardware;
+    while (true) {
+        std::cout << "Gyro: " << hardware.getGyro() << "\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 
     return 0;
 }
