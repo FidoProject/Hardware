@@ -11,6 +11,8 @@
 #define PIN_MOTOR_K_PWM 25
 #define PIN_MOTOR_K_DIR 29
 
+#define PIN_LINE_LED 12
+
 Hardware::Hardware() {
     wiringPiSetup();
 
@@ -28,12 +30,42 @@ Hardware::Hardware() {
     pinMode(PIN_MOTOR_I_DIR,OUTPUT);
     pinMode(PIN_MOTOR_J_DIR,OUTPUT);
     pinMode(PIN_MOTOR_K_DIR,OUTPUT);
+
+    pinMode(PIN_LINE_LED,OUTPUT);
 }
 
 void Hardware::setLED(int r, int g, int b) {
     softPwmWrite(PIN_LED_R,r);
     softPwmWrite(PIN_LED_G,g);
     softPwmWrite(PIN_LED_B,b);
+}
+
+int Hardware::readLine() {
+    digitalWrite(PIN_LINE_LED,1);
+    usleep(200);
+
+    long long longest = readLineSensor(0);
+    int longPin = 0;
+    for (int i=1; i<8; i++) {
+        long long iTime = readLineSensor(i);
+        if (iTime < longest) {
+            longest = iTime;
+            longPin = i;
+        }
+    } return longPin;
+}
+
+long long Hardware::readLineSensor(int i) {
+    pinMode(i,OUTPUT);
+    digitalWrite(i,1);
+    usleep(10);
+
+    pinMode(i,INPUT);
+
+    auto start = std::chrono::high_resolution_clock::now();
+    while (digitalRead(i));
+    auto elapsed = std::chrono::high_resolution_clock::now() - start;
+    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
 }
 
 void Hardware::goHolonomic(int x, int y, int r) {
