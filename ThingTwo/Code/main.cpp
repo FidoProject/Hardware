@@ -6,12 +6,11 @@
 int main() {
     Hardware thingTwo;
 
-    for (int i=0; i<8; i++) {
-        std::cout << "Reading " << i << ": " << thingTwo.readLineSensor(i) << "\n";
+    for (int i=0; i<5; i++) {
+        std::cout << "Reading #" << i << ": " << thingTwo.readLine() << "\n";
         std::cout.flush();
+        sleep(1);
     }
-
-
 
     return 0;
 }

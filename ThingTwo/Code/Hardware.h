@@ -17,9 +17,10 @@ public:
     void setMotors(int i, int j, int k);
     void goHolonomic(int x, int y, int r);
     int readLine();
-    long long readLineSensor(int i);
     virtual ~Hardware();
 private:
+    static const int LINE_SENSORS[];
+    long long readLineSensor(int i);
 };
 
 #endif /* HARDWARE_H_ */

@@ -13,6 +13,8 @@
 
 #define PIN_LINE_LED 12
 
+const int HARDWARE::LINE_SENSORS[] = {6,7,5,3,4,2,0,1};
+
 Hardware::Hardware() {
     wiringPiSetup();
 
@@ -47,7 +49,7 @@ int Hardware::readLine() {
     long long longest = readLineSensor(0);
     int longPin = 0;
     for (int i=1; i<8; i++) {
-        long long iTime = readLineSensor(i);
+        long long iTime = (readLineSensor(LINE_SENSORS[i]) + readLineSensor(LINE_SENSORS[i]))/2;
         if (iTime < longest) {
             longest = iTime;
             longPin = i;
@@ -66,7 +68,7 @@ long long Hardware::readLineSensor(int i) {
     auto start = std::chrono::high_resolution_clock::now();
     while (digitalRead(i));
     auto elapsed = std::chrono::high_resolution_clock::now() - start;
-    
+
     return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
 }
 
