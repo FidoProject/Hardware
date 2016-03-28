@@ -7,10 +7,6 @@
 #include "Fido/Fido.h"
 #include "../../Connection.h"
 
-void lSleep(double seconds) {
-    usleep(seconds*1000000.0);
-}
-
 void goStraight() {
 	double maxRotate = 100;
 	double exploration = 0.2;
