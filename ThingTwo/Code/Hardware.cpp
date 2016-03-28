@@ -13,6 +13,8 @@
 
 #define PIN_LINE_LED 12
 
+#define PIN_BUZZER 11
+
 const int Hardware::LINE_SENSORS[] = {6,7,5,3,4,2,0,1};
 
 Hardware::Hardware() {
@@ -38,6 +40,9 @@ Hardware::Hardware() {
 
     // open serial line
     serialFileDesc = serialOpen("/dev/ttyAMA0",115200);
+
+    // initialize buzzer
+    softToneCreate(PIN_BUZZER);
 }
 
 void Hardware::setLED(int r, int g, int b) {
@@ -107,11 +112,16 @@ void Hardware::getZX(int& z, int& x) {
     z = serialGetchar(serialFileDesc);
 }
 
+void Hardware::setBuzzer(int freq) {
+    softToneWrite(PIN_BUZZER,freq);
+}
+
 Hardware::~Hardware() {
     setLED(0,0,0);
     setMotors(0,0,0);
     digitalWrite(PIN_LINE_LED,0);
     serialClose(serialFileDesc);
+    setBuzzer(0);
 
     usleep(100000);
 }

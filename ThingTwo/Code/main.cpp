@@ -6,12 +6,13 @@
 int main() {
     Hardware thingTwo;
 
-    while (true) {
-        int z, x;
-        thingTwo.getZX(z,x);
+    int cMajor[] = {262,294,330,349,392,440,494};
 
-        std::cout << "Z: " << z << ", X: " << x << "\n";
-        std::cout.flush();
+    for (int i=0; i<7; i++) {
+        thingTwo.setBuzzer(cMajor[i]);
+        usleep(500000);
+    } for (int i=5; i>=0; i--) {
+        thingTwo.setBuzzer(cMajor[i]);
         usleep(500000);
     }
 

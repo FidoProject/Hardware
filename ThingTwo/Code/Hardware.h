@@ -10,6 +10,7 @@
 #include <wiringPi.h>
 #include <softPwm.h>
 #include <wiringSerial.h>
+#include <softTone.h>
 
 class Hardware {
 public:
@@ -19,6 +20,7 @@ public:
     void goHolonomic(int x, int y, int r);
     int readLine();
     void getZX(int& z, int& x);
+    void setBuzzer(int freq);
     virtual ~Hardware();
 private:
     static const int LINE_SENSORS[];
