@@ -13,7 +13,7 @@
 
 #define PIN_LINE_LED 12
 
-const int HARDWARE::LINE_SENSORS[] = {6,7,5,3,4,2,0,1};
+const int Hardware::LINE_SENSORS[] = {6,7,5,3,4,2,0,1};
 
 Hardware::Hardware() {
     wiringPiSetup();
