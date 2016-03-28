@@ -99,10 +99,10 @@ void Hardware::setMotors(int i, int j, int k) {
 
 void Hardware::getZX(int& z, int& x) {
     while (serialGetchar(serialFileDesc) != 0xFA);
-    x = serialGetChar(serialFileDesc);
+    x = serialGetchar(serialFileDesc);
 
     while (serialGetchar(serialFileDesc) != 0xFB);
-    z = serialGetChar(serialFileDesc);
+    z = serialGetchar(serialFileDesc);
 }
 
 Hardware::~Hardware() {
