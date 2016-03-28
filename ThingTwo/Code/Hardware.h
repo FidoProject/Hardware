@@ -11,11 +11,10 @@
 #include <softPwm.h>
 #include <wiringSerial.h>
 #include <softTone.h>
+#include <wiringPiI2C.h>
 
 class Hardware {
-public: 
-    int lastLine;
-
+public:
     Hardware();
     void setLED(int r, int g, int b);
     void setMotors(int i, int j, int k);
@@ -23,10 +22,12 @@ public:
     int readLine();
     void getZX(int& z, int& x);
     void setBuzzer(int freq);
+    int getGyro();
     virtual ~Hardware();
 private:
     static const int LINE_SENSORS[];
     long long readLineSensor(int i);
+    int lastLine;
     int serialFileDesc;
 };
 
