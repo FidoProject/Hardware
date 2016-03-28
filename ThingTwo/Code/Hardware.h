@@ -17,7 +17,7 @@ public:
     Hardware();
     void setLED(int r, int g, int b);
     void setMotors(int i, int j, int k);
-    void goHolonomic(int x, int y, int r);
+    void goHolonomic(int x, int y);
     int readLine();
     void getZX(int& z, int& x);
     void setBuzzer(int freq);

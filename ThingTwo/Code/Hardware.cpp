@@ -81,14 +81,12 @@ long long Hardware::readLineSensor(int i) {
     return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
 }
 
-void Hardware::goHolonomic(int x, int y, int r) {
-    double i = y*sqrt(3)/2 + x/2 + r;
-    double j = y*sqrt(3)/2 - x/2 - r;
-    double k = x - r;
+void Hardware::goHolonomic(int x, int y) {
+    double i = x/2 + y*sqrt(3)/2;
+    double j = x/2 - y*sqrt(3)/2;
+    double k = x;
 
-    double coef = 100.0/(((i>j)?i:j)>k?((i>j)?i:j):k);
-
-    setMotors(i*coef,j*coef,k*coef);
+    setMotors(i,j,k);
 }
 
 void Hardware::setMotors(int i, int j, int k) {

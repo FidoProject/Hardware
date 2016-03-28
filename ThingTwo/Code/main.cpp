@@ -10,12 +10,15 @@ void lSleep(double seconds) {
 int main() {
     Hardware thingTwo;
 
-    thingTwo.setMotors(100,0,0);
+    thingTwo.goHolonomic(0,100);
     lSleep(0.5);
-    thingTwo.setMotors(0,100,0);
+    thingTwo.goHolonomic(100,0);
     lSleep(0.5);
-    thingTwo.setMotors(0,0,100);
+    thingTwo.goHolonomic(0,-100);
     lSleep(0.5);
+    thingTwo.goHolonomic(-100,0);
+    lSleep(0.5);
+
 
     return 0;
 }
