@@ -3,18 +3,19 @@
 
 #include "Hardware.h"
 
+void lSleep(double seconds) {
+    usleep(seconds*1000000.0);
+}
+
 int main() {
     Hardware thingTwo;
 
-    int cMajor[] = {262,294,330,349,392,440,494,523};
-
-    for (int i=0; i<8; i++) {
-        thingTwo.setBuzzer(cMajor[i]);
-        usleep(500000);
-    } for (int i=6; i>=0; i--) {
-        thingTwo.setBuzzer(cMajor[i]);
-        usleep(500000);
-    }
+    thingTwo.setMotors(100,0,0);
+    usleep(0.5);
+    thingTwo.setMotors(0,100,0);
+    usleep(0.5);
+    thingTwo.setMotors(0,0,100);
+    usleep(0.5);
 
     return 0;
 }
