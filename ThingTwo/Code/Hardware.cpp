@@ -98,7 +98,7 @@ void Hardware::setMotors(int i, int j, int k) {
     digitalWrite(PIN_MOTOR_J_DIR,j>0);
     softPwmWrite(PIN_MOTOR_J_PWM,abs(j));
 
-    digitalWrite(PIN_MOTOR_K_DIR,k>0);
+    digitalWrite(PIN_MOTOR_K_DIR,k<0);
     softPwmWrite(PIN_MOTOR_K_PWM,abs(k));
 }
 
