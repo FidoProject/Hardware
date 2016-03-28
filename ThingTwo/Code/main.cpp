@@ -10,15 +10,8 @@ void lSleep(double seconds) {
 int main() {
     Hardware thingTwo;
 
-    thingTwo.goHolonomic(0,100);
-    lSleep(0.5);
-    thingTwo.goHolonomic(100,0);
-    lSleep(0.5);
-    thingTwo.goHolonomic(0,-100);
-    lSleep(0.5);
-    thingTwo.goHolonomic(-100,0);
-    lSleep(0.5);
-
+    thingTwo.goHolonomic(0,100,20);
+    lSleep(3);
 
     return 0;
 }
