@@ -102,13 +102,13 @@ void lineFollow() {
 
     Hardware hardware;
 
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 2, 1, 6, 4, {-1, -1}, {1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0.5);
+    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 2, 1, 6, 4, {-1, -1}, {1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
     learner.reset();
     
     std::cout << "Done with initialization\n";
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, exploration);
-        std::cout << "Action: " << action[0] << "\n";
+        std::cout << "Action: " << action[0] << " " << action[1] << "\n";
 
         hardware.goHolonomic(action[0]*maxDisplacementComponent, action[1]*maxDisplacementComponent, 0);
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
@@ -123,13 +123,13 @@ void lineFollow() {
         rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, 0.001);
         hardware.goHolonomic(action[0]*maxDisplacementComponent, action[1]*maxDisplacementComponent, 0);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        std::cout << "Action: " << action[0] << "\n";
+        std::cout << "Action: " << action[0] << " " << action[1] << "\n";
     }
 }
 
 void lineFollowKiwi() {
     double maxMove = 100;
-    double exploration = 0.2;
+    double exploration = 0.6;
 
     Connection connection;
     int receiverNum;
@@ -139,7 +139,7 @@ void lineFollowKiwi() {
 
     Hardware hardware;
 
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.1, 35000), 0.95, 0.4);
+    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 6, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
     learner.reset();
     
     std::cout << "Done with initialization\n";
@@ -166,7 +166,7 @@ void lineFollowKiwi() {
 }
 
 int main() {
-    lineFollow();
+    lineFollowKiwi();
 
     return 0;
 }
