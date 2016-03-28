@@ -40,10 +40,9 @@ void Hardware::goHolonomic(int x, int y, int r) {
     double i = 0.5*(x - y*sqrt(3)) + r;
     double j = 0.5*(x + y*sqrt(3)) + r;
     double k = x + r;
-​
+
     setMotors(i,j,k);
 }
-
 
 void Hardware::setMotors(int i, int j, int k) {
     digitalWrite(PIN_MOTOR_I_DIR,i>0);

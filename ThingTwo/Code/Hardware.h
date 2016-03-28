@@ -4,6 +4,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include <wiringPi.h>
 #include <softPwm.h>
