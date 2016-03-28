@@ -63,7 +63,9 @@ int Hardware::readLine() {
             longest = iTime;
             longPin = i;
         }
-    } return longPin;
+    } if (longest > 1000) lastLine = longPin;
+    
+    return lastLine;
 }
 
 long long Hardware::readLineSensor(int i) {

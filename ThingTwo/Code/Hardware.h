@@ -26,6 +26,7 @@ private:
     static const int LINE_SENSORS[];
     long long readLineSensor(int i);
     int serialFileDesc;
+    int lastLine;
 };
 
 #endif /* HARDWARE_H_ */
