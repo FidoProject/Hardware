@@ -130,7 +130,7 @@ int Hardware::getGyro() {
     for (int i=0; i<6; i++) rVals[i] = wiringPiI2CRead(imuFileDesc);
     int16_t vals[3];
     for (int i=0; i<3; i++) vals[i] = (int16_t)(rVals[i+1] << 8 | rVals[i]);
-    return vals[0];
+    return vals[2];
 }
 
 Hardware::~Hardware() {
