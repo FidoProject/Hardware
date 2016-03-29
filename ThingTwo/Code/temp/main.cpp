@@ -204,6 +204,7 @@ void lineFollowKiwi() {
 }
 
 void ballFollow() {
+    std::vector<double> choosingTimes, updateTimes;
     double maxDisplacementComponent = 100;
     double exploration = 0.3;
 
@@ -225,7 +226,9 @@ void ballFollow() {
         
         std::cout << " x: " << x << "\n";
 
+        clock_t begin = clock();
         rl::Action action = learner.chooseBoltzmanAction({x < 0}, exploration);
+        choosingTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Action: " << action[0] << "\n";
 
         hardware.goHolonomic(0, 100, action[0]*maxDisplacementComponent);
@@ -239,9 +242,15 @@ void ballFollow() {
         hardware.getZX(z, x);
         
         std::cout << "Training...\n";std::cout.flush();
+
+        begin = clock();
         learner.applyReinforcementToLastAction(reward, {x < 0});
+        updateTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Done training...\n";std::cout.flush();
     }
+
+    printStats(choosingTimes);
+    printStats(updateTimes);
     
     while(true) {
         int z, x; 
