@@ -30,3 +30,6 @@
 # AutoCAD
 *.bak
 *.dwl*
+
+# Eagle
+*.s#*
