@@ -30,3 +30,14 @@
 # AutoCAD
 *.bak
 *.dwl*
+
+# Eagle
+*.s#*
+
+# AVR
+*.d
+*.elf
+*.eep
+*.hex
+*.sizeok
+ThingThree/Arduino/Fido
