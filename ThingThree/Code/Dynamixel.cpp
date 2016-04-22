@@ -36,6 +36,26 @@ int Dynamixel::readData(int id) {
 	}
 }
 
+int Dynamixel::ping(int id) {
+	direction(RPI_DRECTION_TX);
+	serialFlush(port);
+	int checksum = (~(id + AX_RESET_LENGTH + AX_RESET)) & 0xff;
+	char* outData = {AX_START, AX_START, id, AX_READ_DATA, AX_PING, checksum, '\n' };
+	serialPuts(port,outData);
+	usleep(TX_DELAY_TIME);
+	return readData(id);
+}
+
+int Dynamixel::factoryReset(int id) {
+	direction(RPI_DRECTION_TX);
+	serialFlush(port);
+	int checksum = (~(id + AX_RESET_LENGTH + AX_RESET)) & 0xff;
+	char* outData = {AX_START, AX_START, id, AX_RESET_LENGTH, AX_RESET, checksum, '\n' };
+	serialPuts(port,outData);
+	usleep(TX_DELAY_TIME);
+	return readData(id);
+}
+
 std::vector<char> getSerial(int bytes) {
 	std::vector<char> reply;
 	while (reply.size() < bytes) reply.push_back(serialGetchar(port));

@@ -110,7 +110,7 @@
 #define LEFT 0
 #define RIGTH 1
 #define RX_TIME_OUT 10
-#define TX_DELAY_TIME 0.00002
+#define TX_DELAY_TIME 20
 
 #define RPI_DIRECTION_PIN 18
 #define RPI_DIRECTION_TX 1
@@ -123,7 +123,9 @@ public:
 
 	void direction(int d);
 	int readData(int id);
-	
+	int ping(int id);
+	int factoryReset(id);
+
 	std::vector<int> connectedServos;
 private:
 	int port;
