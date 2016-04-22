@@ -1,3 +1,10 @@
+#ifndef DYNAMIXEL_H_
+#define DYNAMIXEL_H_
+
+#include <wiringPi.h>
+#include <string>
+#include <map>
+
 #define AX_MODEL_NUMBER_L 0
 #define AX_MODEL_NUMBER_H 1
 #define AX_VERSION 2
@@ -108,4 +115,26 @@
 #define RPI_DIRECTION_PIN 18
 #define RPI_DIRECTION_TX 1
 #define RPI_DIRECTION_RX 0
-#define RPI_DIRECTION_SWITCH_DELAY 0.0001
+#define RPI_DIRECTION_SWITCH_DELAY 100
+
+class Dynamixel {
+public:
+	Dynamixel();
+
+	void direction(int d);
+private:
+	bool gpioSet;
+	int port;
+
+	std::map<int, string> dictErrors = {
+	    { 1, "Input Voltage" },
+	    { 2, "Angle Limit" },
+		{ 4, "Overheating" },
+		{ 8, "Range" },
+		{ 16, "Checksum" },
+		{ 32, "Overload" },
+		{ 64, "Instruction" }
+	};
+};
+
+#endif /* DYNAMIXEL_H_ */
