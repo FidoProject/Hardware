@@ -1,5 +1,11 @@
 #include "Dynamixel.h"
 
+Dynamixel::Dynamixel() {
+	port = serialOpen("/dev/ttyAMA0",1000000);
+	pinMode(RPI_DIRECTION_PIN,OUTPUT);
+	direction(RPI_DRECTION_RX);
+}
+
 void Dynamixel::direction(d) {
 	digitalWrite(RPI_DIRECTION_PIN,d);
 	usleep(RPI_DIRECTION_SWITCH_DELAY);

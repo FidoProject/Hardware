@@ -123,12 +123,11 @@ public:
 
 	void direction(int d);
 	int readData(int id);
+	
+	std::vector<int> connectedServos;
 private:
-	bool gpioSet;
 	int port;
-
 	std::vector<char> getSerial(int bytes);
-
 	std::map<int, string> dictErrors = {
 	    { 1, "Input Voltage" },
 	    { 2, "Angle Limit" },
