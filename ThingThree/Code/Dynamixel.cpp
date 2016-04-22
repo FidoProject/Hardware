@@ -10,7 +10,7 @@ int Dynamixel::readData(int id) {
 	std::vector<char> reply = getSerial(5);
 
 	if (reply[0] != 0xFF)  {
-		std::cout << "Servo timeout error" << "\n";
+		std::cout << "Servo " << id << "timeout error" << "\n";
 		return -1;
 	}
 
