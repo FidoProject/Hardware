@@ -122,9 +122,12 @@ public:
 	Dynamixel();
 
 	void direction(int d);
+	int readData(int id);
 private:
 	bool gpioSet;
 	int port;
+
+	std::vector<char> getSerial(int bytes);
 
 	std::map<int, string> dictErrors = {
 	    { 1, "Input Voltage" },
