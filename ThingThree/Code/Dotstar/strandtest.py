@@ -64,4 +64,13 @@ def cycle(color=-1):
 		tail += 1
 		if (tail >= numPixels): tail = 0
 
-cycle(0x00FF00)
+def breathe(color):
+	while True:
+		millis = int(round(time.time() * 1000))
+		brightness = (math.exp(math.sin(millis/2000.0*math.pi)) - 0.36787944)*108.0;
+		for i in range(0,numPixels):
+			strip.setPixelColor(i, scale(color,brightness))
+		strip.show()
+		time.sleep(0.01)
+
+breathe(0x00FF00)
