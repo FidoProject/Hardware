@@ -43,5 +43,25 @@ def pulseFromMiddle(color):
 		strip.show();
 		time.sleep(0.02);
 
-while True:
-	pulseFromMiddle(0x00FF00)
+def cycle(color=-1):
+	head = 0
+	tail = -10
+
+	curColor = 0xFF0000 if (color == -1) else color
+	while True:
+		strip.setPixelColor(head,color)
+		strip.setPixelColor(tail,0)
+		strip.show()
+		time.sleep(0.2)
+
+		head += 1
+		if (head >= numPixels):
+			head = 0
+			if (color == -1):
+				color >>= 8
+				if (color == 0): color = 0xFF0000
+
+		tail += 1
+		if (tail >= numPixels): tail = 0
+
+cycle(0x00FF00)
