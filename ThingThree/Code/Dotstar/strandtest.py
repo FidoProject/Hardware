@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import time
+import time, math
 from dotstar import Adafruit_DotStar
 
 numPixels = 24
