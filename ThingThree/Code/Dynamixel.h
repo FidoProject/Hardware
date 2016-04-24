@@ -125,6 +125,7 @@ public:
 	int readData(int id);
 	int ping(int id);
 	int factoryReset(id);
+	int setID(id, newID);
 
 	std::vector<int> connectedServos;
 private:
