@@ -30,4 +30,17 @@ def pulseFade(color):
 		strip.show()
 		time.sleep(0.001)
 
-pulseFade(0x00FF00)
+def pulseFromMiddle(color):
+	for i in range(0,numPixels/2):
+		strip.setPixelColor(numPixels/2 + i, color);
+		strip.setPixelColor(numPixels/2 - i, color);
+		strip.show();
+		time.sleep(0.01);
+
+	for i in range(0,numPixels/2):
+		strip.setPixelColor(i, 0);
+		strip.setPixelColor(numPixels-i, 0);
+		strip.show();
+		time.sleep(0.01);
+
+pulseFromMiddle(0x00FF00)
