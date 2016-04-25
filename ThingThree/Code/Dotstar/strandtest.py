@@ -49,17 +49,17 @@ def cycle(color=-1):
 
 	curColor = 0xFF0000 if (color == -1) else color
 	while True:
-		strip.setPixelColor(head,color)
+		strip.setPixelColor(head,curColor)
 		strip.setPixelColor(tail,0)
 		strip.show()
-		time.sleep(0.2)
+		time.sleep(0.02)
 
 		head += 1
 		if (head >= numPixels):
 			head = 0
 			if (color == -1):
-				color >>= 8
-				if (color == 0): color = 0xFF0000
+				curColor >>= 8
+				if (curColor == 0): curColor = 0xFF0000
 
 		tail += 1
 		if (tail >= numPixels): tail = 0
@@ -71,6 +71,6 @@ def breathe(color):
 		for i in range(0,numPixels):
 			strip.setPixelColor(i, scale(color,brightness))
 		strip.show()
-		time.sleep(0.01)
+                time.sleep(0.02)
 
-breathe(0x00FF00)
+cycle()
