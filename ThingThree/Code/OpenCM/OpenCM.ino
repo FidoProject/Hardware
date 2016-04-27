@@ -23,56 +23,58 @@ boolean readInt(int *outVal) {
 }
 
 void processWrite(byte cmd, byte id) {
-	switch (cmd) {
-		case 'i': // initialize
+	switch (cmd) { 
+		case 'i': { // initialize
 			Dxl.jointMode(id); 
 			break; 
-		case 'n': // set new id
+		} case 'n': { // set new id
 			int newID;
 			if (!readInt(&newID)) break;
 			Dxl.setID(id, newID);
 			Dxl.jointMode(newID);
 			break;
-		case 's': // set speed
+		} case 's': { // set speed
 			int add, val;
 			if (!(readInt(&add) && readInt(&val))) break; 
 			//Dxl.writeWord(id, add, val);
 			Dxl.goalSpeed(id, val);
 			break;
-		case 'p': // move to position
+		} case 'p': { // move to position
 			int pos, vel; 
 			if (!(readInt(&pos) && readInt(&vel))) break; 
 			Dxl.setPosition(id, pos, vel);
 			break; 
-		case 'g': // general write command
+		} case 'g': { // general write command
 			int add, val; 
 			if (!(readInt(&add) && readInt(&val))) break; 
 			Dxl.writeWord(id, add, val);
 			break;
-			
+		
 			// examples of using writeWord()
 			//Dxl.writeWord(id, 30, val); //move to Goal Position
 			//Dxl.writeWord(id, 32, val); //move at Speed
 			//Dxl.writeWord(id, 8, 0); //set wheel mode
+		}
 	}
 }
 
 void processRead(byte cmd, byte id) {
 	/* gets sent some 'complex' command in the cmd byte and then executes */
 	switch (cmd) {
-		case 'j': // read current joint position
+		case 'j': { // read current joint position
 			char str[4]; // create an array of characters
 			int output = Dxl.readWord(id, 36); // query the dynamixel
 			itoa(output, str, 10); // turns integer to ascii
 			// return Position. Values between 0-999
 			Serial2.write(str);
 			break;
-		case 's': // read current speed
+		} case 's': { // read current speed
 			char str[4]; // create an array of characters
 			int output = Dxl.readWord(id, 38); // query the dynamixel
 			itoa(output, str, 10); // turns integer to ascii
   			Serial2.write(str);
 			break;
+		}
 	}
 }
 
