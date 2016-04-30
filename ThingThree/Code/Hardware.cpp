@@ -3,10 +3,15 @@
 #define LENGTH_ONE 10.0
 #define LENGTH_TWO 10.0
 
-#define I_MIN_ANG -90
-#define I_MAX_ANG 90
+#define I_MIN_ANG -65
+#define I_MAX_ANG 65
 #define I_MIN_VAL 0
 #define I_MAX_VAL 1023
+
+#define J_MIN_ANG 0
+#define J_MAX_ANG 270
+#define J_MIN_VAL 850
+#define J_MAX_VAL 200
 
 Hardware::Hardware() {
     fd = serialOpen("/dev/ttyAMA0", 57600);
@@ -74,7 +79,7 @@ void Hardware::setJoints(double i, double j, double k) {
 	int iVal, jVal, kVal;
 	scaleServos(i, j, k, &iVal, &jVal, &kVal);
 	moveJoint(1,iVal);
-	//moveJoint(2,jVal);
+	moveJoint(2,jVal);
 	//moveJoint(3,kVal);
 }
 
@@ -89,6 +94,7 @@ double Hardware::map(double x, double in_min, double in_max, double out_min, dou
 
 void Hardware::scaleServos(double iAng, double jAng, double kAng, int *iVal, int *jVal, int *kVal) {
 	*iVal = round(map(iAng,I_MIN_ANG,I_MAX_ANG,I_MIN_VAL,I_MAX_VAL));
+	*jVal = round(map(jAng,J_MIN_ANG,J_MAX_ANG,J_MIN_VAL,J_MAX_VAL));
 }
 
 void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *theta2) {
