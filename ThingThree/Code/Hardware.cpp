@@ -88,7 +88,7 @@ double Hardware::map(double x, double in_min, double in_max, double out_min, dou
 }
 
 void Hardware::scaleServos(double iAng, double jAng, double kAng, int *iVal, int *jVal, int *kVal) {
-	iVal = round(map(iAng,I_MIN_ANG,I_MAX_ANG,I_MIN_VAL,I_MAX_VAL));
+	*iVal = round(map(iAng,I_MIN_ANG,I_MAX_ANG,I_MIN_VAL,I_MAX_VAL));
 }
 
 void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *theta2) {
@@ -97,8 +97,8 @@ void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *t
 	double q2 = acos((pow(LENGTH_ONE,2) - pow(LENGTH_TWO,2) + pow(hypo,2))
 					 /(2.0*LENGTH_ONE*hypo));
 
-	theta1 = q1 + q2;
-	theta2 = acos((pow(LENGTH_ONE,2) + pow(LENGTH_TWO,2) - pow(hypo,2))
+	*theta1 = q1 + q2;
+	*theta2 = acos((pow(LENGTH_ONE,2) + pow(LENGTH_TWO,2) - pow(hypo,2))
 					 /(2.0*LENGTH_ONE*LENGTH_TWO));
 }
 
