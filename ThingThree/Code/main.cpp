@@ -3,5 +3,5 @@
 int main() {
 	Hardware hand;
 
-	hand.setJoints(0,180,270);
+	hand.setEffectorPosition(0, 10, 10);
 }

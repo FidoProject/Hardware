@@ -1,7 +1,7 @@
 #include "Hardware.h"
 
-#define LENGTH_ONE 10.0
-#define LENGTH_TWO 10.0
+#define LENGTH_ONE 11.5
+#define LENGTH_TWO 16.0
 
 #define I_MIN_ANG -65
 #define I_MAX_ANG 65
@@ -86,6 +86,13 @@ void Hardware::setJoints(double i, double j, double k) {
 	moveJoint(1,iVal);
 	moveJoint(2,jVal);
 	moveJoint(3,kVal);
+}
+
+void Hardware::setEffectorPosition(double theta, double x, double y) {
+	double theta1, theta2;
+	inverseKinematicsXY(x, y, &theta1, &theta2);
+
+	setJoints(theta,theta1,theta2);
 }
 
 void Hardware::moveJoint(int id, int position) {
