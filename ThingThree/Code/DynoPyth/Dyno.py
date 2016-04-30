@@ -8,8 +8,8 @@ s = serial.Serial(port=SERIAL_PORT, baudrate=SERIAL_BAUD)
 
 def reset():
 	moveJoint(1, 512);
-	moveJoint(2, 800);
-	moveJoint(3, 900);
+	moveJoint(2, 850);
+	moveJoint(3, 950);
 
 	for i in range(0,5):
 		gripper(i%2);
