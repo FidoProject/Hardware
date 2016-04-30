@@ -120,11 +120,14 @@ void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *t
 	double hypo = sqrt(pow(x,2) + pow(y,2));
 	double q1 = atan2(y,x);
 	double q2 = acos((pow(LENGTH_ONE,2) - pow(LENGTH_TWO,2) + pow(hypo,2))
-					 /(2.0*LENGTH_ONE*hypo));
+					/(2.0*LENGTH_ONE*hypo));
 
 	*theta1 = q1 + q2;
 	*theta2 = acos((pow(LENGTH_ONE,2) + pow(LENGTH_TWO,2) - pow(hypo,2))
-					 /(2.0*LENGTH_ONE*LENGTH_TWO));
+				  /(2.0*LENGTH_ONE*LENGTH_TWO));
+
+	*theta1 *= 180.0/3.14159265;
+	*theta2 *= 180.0/3.14159265;
 }
 
 Hardware::~Hardware() {
