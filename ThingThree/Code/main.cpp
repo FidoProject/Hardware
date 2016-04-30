@@ -3,5 +3,5 @@
 int main() {
 	Hardware hand;
 
-	hand.setJoint(-90,0,0);
+	hand.setJoints(-90,0,0);
 }
