@@ -36,7 +36,7 @@ void Hardware::writeInt(int inInt) {
 void Hardware::writeCommand(char readWrite, char command, int id) {
 	std::string s;
 	s += readWrite;
-	s += command
+	s += command;
 	s += static_cast<char>(id);
 	serialPuts(fd,s.c_str());
 }
