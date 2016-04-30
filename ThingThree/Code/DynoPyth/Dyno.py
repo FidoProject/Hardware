@@ -1,7 +1,7 @@
 import serial
 import time
 
-SERIAL_PORT = "/dev/tty.usbserial-AL029Z8F"
+SERIAL_PORT = "/dev/ttyAMA0"
 SERIAL_BAUD = 57600
 
 s = serial.Serial(port=SERIAL_PORT, baudrate=SERIAL_BAUD)

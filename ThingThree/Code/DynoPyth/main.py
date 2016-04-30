@@ -3,4 +3,8 @@ import time
 
 from Dyno import *
 
-print "{0:b}".format(getError(5))
+while True:
+	gripper(True)
+	time.sleep(0.5)
+	gripper(False)
+	time.sleep(0.5)
