@@ -1,8 +1,38 @@
+#define START_1 512
+#define START_2 800
+#define START_3 950
+#define GRIPPER_OPEN 800
+#define GRIPPER_CLOSED 450
+
 Dynamixel Dxl(1);
+
+void gripper(boolean open) {
+	if (open) {
+		Dxl.goalPosition(4,GRIPPER_OPEN);
+		Dxl.goalPosition(5,1024-GRIPPER_OPEN);
+	} else {
+		Dxl.goalPosition(4,GRIPPER_CLOSED);
+		Dxl.goalPosition(5,1024-GRIPPER_CLOSED);		
+	}
+}
 
 void setup() {
 	Serial2.begin(57600);
 	Dxl.begin(3);
+
+	for (int id=1; id<6; id++) {
+		Dxl.jointMode(id);
+		Dxl.ledOn(id);
+	} 
+
+	Dxl.goalPosition(1, START_1);
+	Dxl.goalPosition(2, START_2);
+	Dxl.goalPosition(3, START_3);
+	
+	for (int i=0; i<5; i++) {
+		gripper(i%2);
+		delay(500);
+	}
 }
 
 byte blockingRead() {
@@ -23,30 +53,25 @@ boolean readInt(int *outVal) {
 }
 
 void processWrite(byte cmd, byte id) {
-	switch (cmd) { 
-		case 'i': { // initialize
-			Dxl.jointMode(id); 
-			break; 
-		} case 'n': { // set new id
-			int newID;
-			if (!readInt(&newID)) break;
-			Dxl.setID(id, newID);
-			Dxl.jointMode(newID);
-			break;
-		} case 's': { // set speed
-			int add, val;
-			if (!(readInt(&add) && readInt(&val))) break; 
-			//Dxl.writeWord(id, add, val);
+	int val;
+	readInt(&val);
+
+  	switch (cmd) { 
+		case 's': { // set speed
 			Dxl.goalSpeed(id, val);
 			break;
 		} case 'p': { // move to position
-			int pos, vel; 
-			if (!(readInt(&pos) && readInt(&vel))) break; 
-			Dxl.setPosition(id, pos, vel);
+			Dxl.goalPosition(id, val);
 			break; 
+		} case 'o': {
+			gripper(true);
+			break;
+		} case 'c': {
+			gripper(false);
+			break;
 		} case 'g': { // general write command
-			int add, val; 
-			if (!(readInt(&add) && readInt(&val))) break; 
+			int add; 
+			if (!readInt(&add)) break; 
 			Dxl.writeWord(id, add, val);
 			break;
 		
@@ -85,8 +110,10 @@ void loop() {
 		byte cmd = blockingRead();
 		byte id = blockingRead();
 
-		(inByte == 'W') ? processWrite(cmd, id) : processRead(cmd, id);
-	}		
+		if (inByte == 'W') processWrite(cmd, id);
+		else if (inByte == 'R') processRead(cmd, id);
+		else Serial2.println("wut");
+	}
 }
 
 
