@@ -1,6 +1,6 @@
 #define START_1 512
 #define START_2 800
-#define START_3 950
+#define START_3 900
 #define GRIPPER_OPEN 800
 #define GRIPPER_CLOSED 450
 
@@ -69,6 +69,9 @@ void processWrite(byte cmd, byte id) {
 		} case 'c': {
 			gripper(false);
 			break;
+		} case 't': {
+			Dxl.maxTorque(id,val);
+			break;
 		} case 'g': { // general write command
 			int add; 
 			if (!readInt(&add)) break; 
@@ -99,6 +102,10 @@ void processRead(byte cmd, byte id) {
 			itoa(output, str, 10); // turns integer to ascii
   			Serial2.write(str);
 			break;
+		} case 'e': { // read error
+			int output = Dxl.readWord(id, 18); // query the dynamixel
+  			Serial2.println(output);
+			break;
 		}
 	}
 }
@@ -111,8 +118,7 @@ void loop() {
 		byte id = blockingRead();
 
 		if (inByte == 'W') processWrite(cmd, id);
-		else if (inByte == 'R') processRead(cmd, id);
-		else Serial2.println("wut");
+		else processRead(cmd, id);
 	}
 }
 

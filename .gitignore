@@ -41,3 +41,6 @@
 *.hex
 *.sizeok
 ThingThree/Arduino/Fido
+*.pyc
+
+*.pyc
