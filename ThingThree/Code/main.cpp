@@ -3,5 +3,6 @@
 int main() {
 	Hardware hand;
 
-	hand.setEffectorPosition(0, 10, 10);
+	hand.poise();
+	//hand.setEffectorPosition(0, 10, 10);
 }

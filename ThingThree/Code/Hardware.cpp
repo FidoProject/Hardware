@@ -24,7 +24,7 @@ Hardware::Hardware() {
 
 void Hardware::poise() {
 	moveJoint(1, 512);
-	moveJoint(2, 850);
+	moveJoint(2, 875);
 	moveJoint(3, 950);
 }
 
