@@ -2,5 +2,6 @@
 
 int main() {
 	Hardware hand;
-	hand.clap(5);
+
+	hand.setJoint(-90,0,0);
 }
