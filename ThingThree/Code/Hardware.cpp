@@ -17,13 +17,13 @@ void Hardware::clap(int claps) {
 	}
 }
 
-void Hardware::getError(int id) {
+int Hardware::getError(int id) {
 	return readDxl(id,'e');
 }
 
 int Hardware::readDxl(int id, char cmd) {
 	std::string val;
-	while (serialDataAvailable(fd) > 0) val += serialGetchar(fd);
+	while (serialDataAvail(fd) > 0) val += serialGetchar(fd);
 
 	return atoi(val.c_str());
 }
@@ -34,7 +34,7 @@ void Hardware::writeInt(int inInt) {
 }
 
 void Hardware::writeCommand(char readWrite, char command, int id) {
-	std::string s = readWrite + command + ((char)id);
+	std::string s = readWrite + command + static_cast<char>(id);
 	serialPuts(fd,s.c_str());
 }
 
