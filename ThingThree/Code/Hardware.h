@@ -19,7 +19,7 @@ public:
 
     virtual ~Hardware();
 private:
-	void Hardware::writeCommand(char readWrite, char command, int id);
+	void writeCommand(char readWrite, char command, int id);
 	void writeInt(int inInt);
 	int readDxl(int id, char cmd);
 
