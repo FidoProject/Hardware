@@ -1,3 +1,9 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <string>
+#include <cmath>
+#include <wiringSerial.h>
+
 #include "Hardware.h"
 
 #define LENGTH_ONE 11.5
@@ -8,10 +14,10 @@
 #define I_MIN_VAL 0
 #define I_MAX_VAL 1023
 
-#define J_MIN_ANG 0
+#define J_MIN_ANG 35
 #define J_MAX_ANG 180
-#define J_MIN_VAL 850
-#define J_MAX_VAL 230
+#define J_MIN_VAL 230
+#define J_MAX_VAL 850
 
 #define K_MIN_ANG 0
 #define K_MAX_ANG 270

@@ -1,13 +1,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <string>
-#include <cmath>
-
-#include <wiringSerial.h>
-
 class Hardware {
 public:
     Hardware();
