@@ -13,7 +13,7 @@ void Hardware::poise() {
 void Hardware::clap(int claps) {
 	for (int i=0; i<1+claps*2; i++) {
 		gripper(i%2);
-		time.sleep(0.5);
+		usleep(500000);
 	}
 }
 
