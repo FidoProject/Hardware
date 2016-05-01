@@ -28,6 +28,10 @@
 #define SPHERE_CENTER_Z -5
 #define SPHERE_RADIUS 7
 
+int last1 = -1000;
+int last2 = -1000;
+int last3 = -1000;
+
 Hardware::Hardware() {
     fd = serialOpen("/dev/ttyAMA0", 57600);
 }
@@ -119,7 +123,7 @@ void Hardware::gripper(bool open) {
 	}
 }
 
-bool Hardware::setJoints(double i, double j, double k, bool override /* = false */) {
+bool Hardware::setJointsUnsafe(double i, double j, double k, bool override /* = false */) {
 	double x, y, z;
 	forwardKinematicsXY(i, j, k, &x, &y, &z);
 
@@ -132,6 +136,19 @@ bool Hardware::setJoints(double i, double j, double k, bool override /* = false 
 	moveJoint(3,kVal);
 
 	return true;
+}
+
+bool Hardware::setJoints(double i, double j, double k, bool override /* = false */) {
+	if(last1 == -1000) {
+		setJointsUnsafe(i, j, k, override)
+	} else {
+		while(i-last1 != 0 && j-last2 != 0 && k-last3 != 0) {
+			i += (i-last1)*0.5;
+			j += (j-last2)*0.5;
+			k += (k-last3)*0.5;
+			setJointsUnsafe(i, j, k, override);
+		}
+	}
 }
 
 bool Hardware::safetyCheck(double x, double y, double z) {
