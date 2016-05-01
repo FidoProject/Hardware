@@ -37,7 +37,7 @@ private:
 	bool safetyCheck(double x, double y, double z);
 	void scaleServos(double iAng, double jAng, double kAng, int *iVal, int *jVal, int *kVal);
 	void inverseKinematicsXY(double x, double y, double *theta1, double *theta2);
-	void forwardKinematicsXY(double theta0, double theta1, double theta2, double *x, double *y, double *z)
+	void forwardKinematicsXY(double theta0, double theta1, double theta2, double *x, double *y, double *z);
 
 	int fd;
 };

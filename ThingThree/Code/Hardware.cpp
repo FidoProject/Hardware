@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string>
 #include <cmath>
+#include <iostream>
 #include <wiringSerial.h>
 
 #include "Hardware.h"
@@ -165,7 +166,7 @@ void Hardware::forwardKinematicsXY(double theta0, double theta1, double theta2, 
 	*y = LENGTH_ONE*cos(theta1*0.0174533) + LENGTH_TWO*cos(theta3*0.0174533);
 	*z = LENGTH_ONE*sin(theta1*0.0174533) + LENGTH_TWO*sin(theta3*0.0174533);
 
-	*x = -y*sin(theta0*0.0174532925);
+	*x = -*y*sin(theta0*0.0174532925);
 	*y *= cos(theta0*0.0174532925);
 
 	std::cout << "Thetas: (" << theta0 << "," << theta1 << "," << theta2 << "), Position: (" << *x << "," << *y << ")\n";

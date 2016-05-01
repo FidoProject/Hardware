@@ -13,6 +13,9 @@
 #define K_MIN_SAFE_ANG 0
 #define K_MAX_SAFE_ANG 90
 
+double randOutput() {
+	return ((double) rand() / (RAND_MAX))*2.0 - 1;
+}
 
 bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
 	double iAng = Hardware::map(i, -1, 1, I_MIN_SAFE_ANG, I_MAX_SAFE_ANG);
@@ -29,6 +32,14 @@ void stressTest(Hardware *hardware, int trials) {
 		} else {
 			std::cout << "Move fail-safed.\n";
 		} usleep(3000000);
+	}
+}
+
+void testSonars(Hardware *hardware, int trials) {
+	for (int i=0; i<trials; i++) {
+		int l, r; getSonars(&l, &r);
+		std::cout << "Sonars: (" << l << ", " << r << ")\n";
+		std::cout.flush();
 	}
 }
 
