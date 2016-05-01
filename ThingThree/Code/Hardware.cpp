@@ -140,13 +140,18 @@ bool Hardware::setJointsUnsafe(double i, double j, double k, bool override /* = 
 
 bool Hardware::setJoints(double i, double j, double k, bool override /* = false */) {
 	if(last1 == -1000) {
-		setJointsUnsafe(i, j, k, override)
+		setJointsUnsafe(i, j, k, override);
+		last1 = i;
+		last2 = j;
+		last3 = k;
 	} else {
 		while(i-last1 != 0 && j-last2 != 0 && k-last3 != 0) {
-			i += (i-last1)*0.5;
-			j += (j-last2)*0.5;
-			k += (k-last3)*0.5;
-			setJointsUnsafe(i, j, k, override);
+			last1 += (i-last1)*0.5;
+			last2 += (j-last2)*0.5;
+			last3 += (k-last3)*0.5;
+			setJointsUnsafe(last1, last2, last3, override);
+			usleep(100000);
+			std::cout << "ONCE\n;";
 		}
 	}
 }
