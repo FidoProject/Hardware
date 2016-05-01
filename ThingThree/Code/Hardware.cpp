@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string>
 #include <cmath>
+#include <iostream>
 #include <wiringSerial.h>
 
 #include "Hardware.h"
@@ -11,15 +12,25 @@
 
 #define I_MIN_VAL 0
 #define I_MAX_VAL 1023
+#define I_MIN_ANG -65
+#define I_MAX_ANG 65
 
 #define J_MIN_VAL 230
 #define J_MAX_VAL 850
+#define J_MIN_ANG 35
+#define J_MAX_ANG 180
 
 #define K_MIN_VAL 950
 #define K_MAX_VAL 20
+#define K_MIN_ANG 0
+#define K_MAX_ANG 270
 
 #define SPHERE_CENTER_Z -5
 #define SPHERE_RADIUS 7
+
+double last1 = -1000;
+double last2 = -1000;
+double last3 = -1000;
 
 Hardware::Hardware() {
     fd = serialOpen("/dev/ttyAMA0", 57600);
@@ -38,9 +49,7 @@ void Hardware::neutral() {
 }
 
 void Hardware::poise() {
-	moveJoint(1, 512);
-	moveJoint(2, 860);
-	moveJoint(3, 960);
+	setJoints(0, 180, 30);
 }
 
 void Hardware::clap(int claps) {
@@ -112,14 +121,11 @@ void Hardware::gripper(bool open) {
 	}
 }
 
-bool Hardware::setJoints(double i, double j, double k) {
-	double y, z;
-	forwardKinematicsXY(j, k, &y, &z);
+bool Hardware::setJointsUnsafe(double i, double j, double k, bool override /* = false */) {
+	double x, y, z;
+	forwardKinematicsXY(i, j, k, &x, &y, &z);
 
-	double x = -y*sin(i*0.0174532925);
-	y *= cos(i*0.0174532925);
-
-	if (!safetyCheck(x,y,z)) return false;
+	if (!override && !safetyCheck(x,y,z)) return false;
 
 	int iVal, jVal, kVal;
 	scaleServos(i, j, k, &iVal, &jVal, &kVal);
@@ -130,10 +136,28 @@ bool Hardware::setJoints(double i, double j, double k) {
 	return true;
 }
 
+bool Hardware::setJoints(double i, double j, double k, bool override /* = false */) {
+	if(last1 == -1000) {
+		setJointsUnsafe(i, j, k, override);
+		last1 = i;
+		last2 = j;
+		last3 = k;
+	} else {
+		while(fabs(i-last1) > 1 || fabs(j-last2) > 1 || fabs(k-last3) > 1) {
+			last1 += double(i-last1)*0.05;
+			last2 += double(j-last2)*0.05;
+			last3 += double(k-last3)*0.05;
+			setJointsUnsafe(last1, last2, last3, override);
+			usleep(30000);
+		}
+	}
+}
+
 bool Hardware::safetyCheck(double x, double y, double z) {
 	double radius = sqrt(x*x + y*y + pow(z-SPHERE_CENTER_Z,2));
 	if (radius < SPHERE_RADIUS) return false;
-	else if (z < -5) return false;
+	else if (z < -5 || z > 24) return false;
+	else if (y < -1) return false;
 	else return true;
 }
 
@@ -155,10 +179,15 @@ void Hardware::scaleServos(double iAng, double jAng, double kAng, int *iVal, int
 	*kVal = round(map(kAng,K_MIN_ANG,K_MAX_ANG,K_MIN_VAL,K_MAX_VAL));
 }
 
-void Hardware::forwardKinematicsXY(double theta1, double theta2, double *x, double *y) {
+void Hardware::forwardKinematicsXY(double theta0, double theta1, double theta2, double *x, double *y, double *z) {
 	double theta3 = theta2 - (180 - theta1);
-	*x = LENGTH_ONE*cos(theta1*0.0174533) + LENGTH_TWO*cos(theta3*0.0174533);
-	*y = LENGTH_ONE*sin(theta1*0.0174533) + LENGTH_TWO*sin(theta3*0.0174533);
+	*y = LENGTH_ONE*cos(theta1*0.0174533) + LENGTH_TWO*cos(theta3*0.0174533);
+	*z = LENGTH_ONE*sin(theta1*0.0174533) + LENGTH_TWO*sin(theta3*0.0174533);
+
+	*x = -*y*sin(theta0*0.0174532925);
+	*y *= cos(theta0*0.0174532925);
+
+	//std::cout << "Thetas: (" << theta0 << "," << theta1 << "," << theta2 << "), Position: (" << *x << "," << *y << "," << *z << ")\n";
 }
 
 void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *theta2) {

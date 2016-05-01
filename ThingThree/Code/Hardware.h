@@ -1,14 +1,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#define I_MIN_ANG -65
-#define I_MAX_ANG 65
-
-#define J_MIN_ANG 35
-#define J_MAX_ANG 180
-
-#define K_MIN_ANG 0
-#define K_MAX_ANG 270
 
 class Hardware {
 public:
@@ -23,7 +15,8 @@ public:
 	void gripper(bool open);
 
 	bool setEffectorPosition(double theta, double x, double y);
-	bool setJoints(double i, double j, double k);
+	bool setJointsUnsafe(double i, double j, double k, bool override = false);
+	bool setJoints(double i, double j, double k, bool override = false);
 
 	void setSpeed(int id, int speed);
 	void setTorque(int id, int torque);
@@ -45,7 +38,7 @@ private:
 	bool safetyCheck(double x, double y, double z);
 	void scaleServos(double iAng, double jAng, double kAng, int *iVal, int *jVal, int *kVal);
 	void inverseKinematicsXY(double x, double y, double *theta1, double *theta2);
-	void forwardKinematicsXY(double theta1, double theta2, double *x, double *y);
+	void forwardKinematicsXY(double theta0, double theta1, double theta2, double *x, double *y, double *z);
 
 	int fd;
 };
