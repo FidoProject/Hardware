@@ -98,4 +98,4 @@ def breathe(color):
 		strip.show()
                 time.sleep(0.02)
 
-pulseCycle(int(sys.argv[0],0),int(sys.argv[1]))
+pulseCycle(int(sys.argv[1],0),int(sys.argv[2]))
