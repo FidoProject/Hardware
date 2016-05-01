@@ -9,18 +9,12 @@
 #define LENGTH_ONE 11.5
 #define LENGTH_TWO 16.0
 
-#define I_MIN_ANG -65
-#define I_MAX_ANG 65
 #define I_MIN_VAL 0
 #define I_MAX_VAL 1023
 
-#define J_MIN_ANG 35
-#define J_MAX_ANG 180
 #define J_MIN_VAL 230
 #define J_MAX_VAL 850
 
-#define K_MIN_ANG 0
-#define K_MAX_ANG 270
 #define K_MIN_VAL 950
 #define K_MAX_VAL 20
 
@@ -125,8 +119,7 @@ bool Hardware::setJoints(double i, double j, double k) {
 	double x = -y*sin(i*0.0174532925);
 	y *= cos(i*0.0174532925);
 
-	double radius = sqrt(x*x + y*y + pow(z-SPHERE_CENTER_Z,2));
-	if (radius < SPHERE_RADIUS) return false;
+	if (!safetyCheck(x,y,z)) return false;
 
 	int iVal, jVal, kVal;
 	scaleServos(i, j, k, &iVal, &jVal, &kVal);
@@ -135,6 +128,13 @@ bool Hardware::setJoints(double i, double j, double k) {
 	moveJoint(3,kVal);
 
 	return true;
+}
+
+static bool Hardware::safetyCheck(double x, double y, double z) {
+	double radius = sqrt(x*x + y*y + pow(z-SPHERE_CENTER_Z,2));
+	if (radius < SPHERE_RADIUS) return false;
+	else if (z < -5) return false;
+	else return true;
 }
 
 bool Hardware::setEffectorPosition(double theta, double x, double y) {
@@ -149,7 +149,7 @@ void Hardware::moveJoint(int id, int position) {
 	writeInt(position);
 }
 
-double Hardware::map(double x, double in_min, double in_max, double out_min, double out_max) {
+static double Hardware::map(double x, double in_min, double in_max, double out_min, double out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
