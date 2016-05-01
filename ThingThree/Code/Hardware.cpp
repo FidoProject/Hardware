@@ -45,8 +45,8 @@ void Hardware::neutral() {
 
 void Hardware::poise() {
 	moveJoint(1, 512);
-	moveJoint(2, 875);
-	moveJoint(3, 950);
+	moveJoint(2, 880);
+	moveJoint(3, 960);
 }
 
 void Hardware::clap(int claps) {
@@ -56,11 +56,26 @@ void Hardware::clap(int claps) {
 	}
 }
 
-int Hardware::getError(int id) {
+int Hardware::getServoError(int id) {
 	return readDxl(id,'e');
 }
 
+void Hardware::getSonars(int *sonarOne, int *sonarTwo) {
+	writeCommand('R','v',128);
+
+	std::string val;
+	while (serialDataAvail(fd) > 0) val += serialGetchar(fd);
+
+	std::string one = str.substr(0, val.find("\n"));
+	std::string two = str.substr(val.find("\n"));
+
+	*sonarOne = atoi(one.c_str());
+	*sonarTwo = atoi(two.c_str());
+}
+
 int Hardware::readDxl(int id, char cmd) {
+	writeCommand('R',cmd,id);
+
 	std::string val;
 	while (serialDataAvail(fd) > 0) val += serialGetchar(fd);
 

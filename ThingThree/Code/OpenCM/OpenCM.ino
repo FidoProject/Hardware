@@ -1,8 +1,12 @@
 #define START_1 512
-#define START_2 800
-#define START_3 900
+#define START_2 880
+#define START_3 950
 #define GRIPPER_OPEN 800
-#define GRIPPER_CLOSED 450
+#define GRIPPER_CLOSED 500
+
+#define SONAR_TRIGGER 3
+#define SONAR_LEFT 2
+#define SONAR_RIGHT 1
 
 Dynamixel Dxl(1);
 
@@ -20,10 +24,18 @@ void setup() {
 	Serial2.begin(57600);
 	Dxl.begin(3);
 
+	pinMode(SONAR_LEFT, INPUT_ANALOG);
+	pinMode(SONAR_RIGHT, INPUT_ANALOG);
+	pinMode(SONAR_TRIGGER, OUTPUT);
+
+	digitalWrite(SONAR_TRIGGER, LOW);
+
 	for (int id=1; id<6; id++) {
 		Dxl.jointMode(id);
 		Dxl.ledOn(id);
 	} 
+
+	Dxl.writeWord(BROADCAST_ID,11,100);
 
 	Dxl.goalPosition(1, START_1);
 	Dxl.goalPosition(2, START_2);
@@ -105,6 +117,16 @@ void processRead(byte cmd, byte id) {
 		} case 'e': { // read error
 			int output = Dxl.readWord(id, 18); // query the dynamixel
   			Serial2.println(output);
+			break;
+		} case 'v': {
+			digitalWrite(SONAR_TRIGGER, HIGH);
+  			delay(10);
+  			
+  			int sonarOne = analogRead(SONAR_LEFT);
+    			int sonarTwo = analogRead(SONAR_RIGHT);
+  
+  			SerialUSB.println(sonarOne);
+  			SerialUSB.println(sonarTwo);
 			break;
 		}
 	}

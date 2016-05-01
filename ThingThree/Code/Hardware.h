@@ -18,7 +18,9 @@ public:
 
 	void setSpeed(int id, int speed);
 	void setTorque(int id, int torque);
-	int getError(int id);
+
+	void getSonars(int *sonarOne, int *sonarTwo);
+	int getServoError(int id);
 
     virtual ~Hardware();
 private:
