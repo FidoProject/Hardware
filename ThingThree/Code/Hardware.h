@@ -5,6 +5,10 @@ class Hardware {
 public:
     Hardware();
 
+	void good();
+	void bad();
+	void neutral();
+
 	void poise();
 	void clap(int claps);
 	void gripper(bool open);

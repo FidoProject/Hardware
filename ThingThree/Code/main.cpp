@@ -7,8 +7,11 @@ int main() {
 	Hardware hand;
 
 	hand.poise();
-
+	
 	usleep(1000000);
-
-	std::cout << hand.setEffectorPosition(0, 0, 0);
+	hand.bad();
+	usleep(1000000);
+	hand.good();
+	usleep(1000000);
+	hand.neutral();
 }

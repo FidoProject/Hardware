@@ -31,6 +31,18 @@ Hardware::Hardware() {
     fd = serialOpen("/dev/ttyAMA0", 57600);
 }
 
+void Hardware::good() {
+	system("good");
+}
+
+void Hardware::bad() {
+	system("bad");
+}
+
+void Hardware::neutral() {
+	system("neutral");
+}
+
 void Hardware::poise() {
 	moveJoint(1, 512);
 	moveJoint(2, 875);
