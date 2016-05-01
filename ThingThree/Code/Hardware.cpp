@@ -28,9 +28,9 @@
 #define SPHERE_CENTER_Z -5
 #define SPHERE_RADIUS 7
 
-int last1 = -1000;
-int last2 = -1000;
-int last3 = -1000;
+double last1 = -1000;
+double last2 = -1000;
+double last3 = -1000;
 
 Hardware::Hardware() {
     fd = serialOpen("/dev/ttyAMA0", 57600);
@@ -145,10 +145,10 @@ bool Hardware::setJoints(double i, double j, double k, bool override /* = false 
 		last2 = j;
 		last3 = k;
 	} else {
-		while(i-last1 != 0 && j-last2 != 0 && k-last3 != 0) {
-			last1 += (i-last1)*0.5;
-			last2 += (j-last2)*0.5;
-			last3 += (k-last3)*0.5;
+		while(fabs(i-last1) > 1 || fabs(j-last2) > 1 || fabs(k-last3) > 1) {
+			last1 += double(i-last1)*0.2;
+			last2 += double(j-last2)*0.2;
+			last3 += double(k-last3)*0.2;
 			setJointsUnsafe(last1, last2, last3, override);
 			usleep(100000);
 			std::cout << "ONCE\n;";
