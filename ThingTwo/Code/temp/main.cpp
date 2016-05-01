@@ -68,6 +68,7 @@ void goStraight() {
 }
 
 void goStraightKiwi() {
+    std::vector<double> choosingTimes, updateTimes;
     double maxMove = 100;
     double exploration = 0.66666;
 
@@ -81,10 +82,14 @@ void goStraightKiwi() {
 
     rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 0.95, 0.4);
     learner.reset();
+    
+    int iter = 0;
 
     std::cout << "Done with initialization\n";
     while(true) {
+        clock_t begin = clock();
         rl::Action action = learner.chooseBoltzmanAction({1}, exploration);
+        choosingTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
 
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
@@ -93,15 +98,24 @@ void goStraightKiwi() {
 
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
+        begin = clock();
         learner.applyReinforcementToLastAction(reward, {1});
-        
+        updateTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
+
         exploration *= .75;
         if(exploration < 0.2) exploration = 0.2;
+
+        iter++;
     }
     
+    std::cout << "Iter: " << iter << "\n";
+
     std::ofstream ostream;
      ostream.open("straightkiwi_"+std::to_string(rand())+".txt");
     learner.store(&ostream);
+    
+    printStats(choosingTimes);
+    printStats(updateTimes);
 
     while(true) {
         rl::Action action = learner.chooseBoltzmanAction({1}, 0.001);
@@ -219,6 +233,8 @@ void ballFollow() {
     rl::WireFitQLearn learner = rl::WireFitQLearn(1, 1, 1, 8, 4, {-1}, {1}, 6, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
     learner.reset();
     
+    int iter = 0;
+
     std::cout << "Done with initialization\n";
     while(true) {
         int x, z;
@@ -247,7 +263,10 @@ void ballFollow() {
         learner.applyReinforcementToLastAction(reward, {x < 0});
         updateTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Done training...\n";std::cout.flush();
+        iter++;
     }
+
+    std::cout << "Iter: " << iter << "\n";
 
     printStats(choosingTimes);
     printStats(updateTimes);
@@ -280,7 +299,7 @@ void runModel(std::string filename) {
 int main() {
     srand(time(NULL));
     //runModel("2016764524.txt");
-    ballFollow();
+    goStraightKiwi();
     
     /*Hardware h;
     int z, x;
