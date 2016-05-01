@@ -24,6 +24,9 @@
 #define K_MIN_VAL 950
 #define K_MAX_VAL 20
 
+#define SPHERE_CENTER_Z -5
+#define SPHERE_RADIUS 7
+
 Hardware::Hardware() {
     fd = serialOpen("/dev/ttyAMA0", 57600);
 }
@@ -86,19 +89,30 @@ void Hardware::gripper(bool open) {
 	}
 }
 
-void Hardware::setJoints(double i, double j, double k) {
+bool Hardware::setJoints(double i, double j, double k) {
+	double y, z;
+	forwardKinematicsXY(j, k, &y, &z);
+
+	double x = -y*sin(i*0.0174532925);
+	y *= cos(i*0.0174532925);
+
+	double radius = sqrt(x*x + y*y + pow(z-SPHERE_CENTER_Z,2));
+	if (radius < SPHERE_RADIUS) return false;
+
 	int iVal, jVal, kVal;
 	scaleServos(i, j, k, &iVal, &jVal, &kVal);
 	moveJoint(1,iVal);
 	moveJoint(2,jVal);
 	moveJoint(3,kVal);
+
+	return true;
 }
 
-void Hardware::setEffectorPosition(double theta, double x, double y) {
+bool Hardware::setEffectorPosition(double theta, double x, double y) {
 	double theta1, theta2;
 	inverseKinematicsXY(x, y, &theta1, &theta2);
 
-	setJoints(theta,theta1,theta2);
+	return setJoints(theta,theta1,theta2);
 }
 
 void Hardware::moveJoint(int id, int position) {
@@ -114,6 +128,12 @@ void Hardware::scaleServos(double iAng, double jAng, double kAng, int *iVal, int
 	*iVal = round(map(iAng,I_MIN_ANG,I_MAX_ANG,I_MIN_VAL,I_MAX_VAL));
 	*jVal = round(map(jAng,J_MIN_ANG,J_MAX_ANG,J_MIN_VAL,J_MAX_VAL));
 	*kVal = round(map(kAng,K_MIN_ANG,K_MAX_ANG,K_MIN_VAL,K_MAX_VAL));
+}
+
+void Hardware::forwardKinematicsXY(double theta1, double theta2, double *x, double *y) {
+	double theta3 = theta2 - (180 - theta1);
+	*x = LENGTH_ONE*cos(theta1*0.0174533) + LENGTH_TWO*cos(theta3*0.0174533);
+	*y = LENGTH_ONE*sin(theta1*0.0174533) + LENGTH_TWO*sin(theta3*0.0174533);
 }
 
 void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *theta2) {

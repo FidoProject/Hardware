@@ -1,6 +1,7 @@
 #include "Hardware.h"
 
 #include <unistd.h>
+#include <iostream>
 
 int main() {
 	Hardware hand;
@@ -9,5 +10,5 @@ int main() {
 
 	usleep(1000000);
 
-	hand.setEffectorPosition(0, 10, 10);
+	std::cout << hand.setEffectorPosition(0, 0, 0);
 }
