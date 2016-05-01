@@ -48,5 +48,11 @@ int main() {
 	Hardware hand;
 	hand.poise();
 
-	stressTest(&hand, 10);
+	int THRESH = 300;
+
+	while (true) {
+		int l, r; hardware->getSonars(&l, &r);
+		double i = (l < THRESH || r < THRESH) ? ((l < r) ? 65 : -65) : 0;
+		hardware->setJoints(i, 50, 40);
+	}
 }
