@@ -49,9 +49,7 @@ void Hardware::neutral() {
 }
 
 void Hardware::poise() {
-	moveJoint(1, 512);
-	moveJoint(2, 860);
-	moveJoint(3, 960);
+	setJoints(0, 180, 30);
 }
 
 void Hardware::clap(int claps) {
@@ -150,8 +148,7 @@ bool Hardware::setJoints(double i, double j, double k, bool override /* = false 
 			last2 += double(j-last2)*0.2;
 			last3 += double(k-last3)*0.2;
 			setJointsUnsafe(last1, last2, last3, override);
-			usleep(100000);
-			std::cout << "ONCE\n;";
+			usleep(30000);
 		}
 	}
 }
