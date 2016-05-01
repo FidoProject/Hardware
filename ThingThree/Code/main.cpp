@@ -8,7 +8,7 @@
 #define I_MAX_SAFE_ANG 65
 
 #define J_MIN_SAFE_ANG 35
-#define J_MAX_SAFE_ANG 120
+#define J_MAX_SAFE_ANG 180
 
 #define K_MIN_SAFE_ANG 0
 #define K_MAX_SAFE_ANG 90
@@ -54,6 +54,6 @@ int main() {
 		int l, r; hand.getSonars(&l, &r);
 		std::cout << "Sonars: (" << l << "," << r << ")\n";
 		double i = (l > THRESH || r > THRESH) ? ((l > r) ? 65 : -65) : 0;
-		hand.setJoints(i, 50, 40, true);
+		hand.setJoints(i, 180, 40, true);
 	}
 }
