@@ -37,7 +37,7 @@ void stressTest(Hardware *hardware, int trials) {
 
 void testSonars(Hardware *hardware, int trials) {
 	for (int i=0; i<trials; i++) {
-		int l, r; getSonars(&l, &r);
+		int l, r; hardware->getSonars(&l, &r);
 		std::cout << "Sonars: (" << l << ", " << r << ")\n";
 		std::cout.flush();
 	}
