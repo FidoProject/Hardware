@@ -4,11 +4,12 @@
 #include <stdlib.h>
 #include <iostream>
 
-int main() {
-	Hardware hand;
-	hand.poise();
+bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
+	double iAng = Hardware::map(i, -1, 1, I_MIN_ANG, I_MAX_ANG);
+	double jAng = Hardware::map(j, -1, 1, J_MIN_ANG, J_MAX_ANG);
+	double kAng = Hardware::map(k, -1, 1, K_MIN_ANG, K_MAX_ANG);
 
-	stressTest(&hand, 10);
+	return hardware->setJoints(iAng, jAng, kAng);
 }
 
 void stressTest(Hardware *hardware, int trials) {
@@ -21,10 +22,9 @@ void stressTest(Hardware *hardware, int trials) {
 	}
 }
 
-bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
-	double iAng = Hardware::map(i, -1, 1, I_MIN_ANG, I_MAX_ANG);
-	double jAng = Hardware::map(j, -1, 1, J_MIN_ANG, J_MAX_ANG);
-	double kAng = Hardware::map(k, -1, 1, K_MIN_ANG, K_MAX_ANG);
+int main() {
+	Hardware hand;
+	hand.poise();
 
-	return hardware->setJoints(iAng, jAng, kAng);
+	stressTest(&hand, 10);
 }
