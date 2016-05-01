@@ -59,7 +59,13 @@ int main() {
 		} l /= NUM_SONAR_READINGS; r /= NUM_SONAR_READINGS;
 		std::cout << "Sonars: (" << l << "," << r << ")\n";
 
-		double i = (abs(r-l) > THRESH) ? ((r > l) ? -30:30) : 0;
+		int delay = 0;
+		if (abs(r-l) > THRESH) {
+			i = ((r > l) ? -30:30);
+			delay = 500000;
+		} else i = 0;
+
 		hand.setJoints(i, 180, 40, true);
+		usleep(delay);
 	}
 }
