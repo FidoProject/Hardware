@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "../Hardware.h"
-#include "Fido/Fido.h"
+#include "../../../../Fido/include/Fido.h"
 #include "../../../Connection.h"
 
 // ---------------------- Helper Functions -----------------------
@@ -42,7 +42,7 @@ void goStraight() {
 
     Hardware hardware;
 
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 1, 1, 3, 4, {-1}, {1}, 11, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.1, 35000), 0.95, 0.4);
+    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 1, 1, 3, 4, {-1}, {1}, 11, new rl::LSInterpolator(), new net::Backpropagation(0.01, 0.9, 0.1, 35000), 0.95, 0.4);
     learner.reset();
 
     std::cout << "Done with initialization\n";
@@ -79,7 +79,7 @@ void goStraightKiwi() {
 
     Hardware hardware;
 
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 0.95, 0.4);
+    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 3, new rl::LSInterpolator(), new net::Backpropagation(0.01, 0.9, 0.05, 5000), 0.95, 0.4);
     learner.reset();
 
     std::cout << "Done with initialization\n";
@@ -122,8 +122,9 @@ void lineFollow() {
     } while(receiverNum != 5 && receiverNum != 6);
 
     Hardware hardware;
-
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 2, 1, 6, 4, {-1, -1}, {1, 1}, 3, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
+    
+    rl::FidoControlSystem learner(1, {-1, -1}, {1, 1}, 3);
+    //rl::WireFitQLearn learner = rl::WireFitQLearn(1, 2, 1, 6, 4, {-1, -1}, {1, 1}, 3, new rl::LSInterpolator(), new net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
     learner.reset();
 
     std::cout << "Done with initialization\n";
@@ -150,7 +151,7 @@ void lineFollow() {
 
 void lineFollowKiwi() {
     std::vector<double> choosingTimes, updateTimes;
-    double maxMove = 100;
+   double maxMove = 100;
     double exploration = 0.2;
 
     Connection connection;
@@ -160,13 +161,14 @@ void lineFollowKiwi() {
     } while(receiverNum != 5 && receiverNum != 6);
 
     Hardware hardware;
-
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 6, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
+    
+    rl::FidoControlSystem learner(1, {-1, -1, -1}, {1, 1, 1}, 6);
+    //rl::WireFitQLearn learner = rl::WireFitQLearn(1, 3, 1, 8, 4, {-1, -1, -1}, {1, 1, 1}, 6, new rl::LSInterpolator(), new net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
 
     std::cout << "Done with initialization\n";
     while(true) {
         clock_t begin = clock();
-        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, exploration);
+        rl::Action action = learner.chooseBoltzmanActionDynamic({!isLeftOfLine(hardware) ? -1 : 1});
         choosingTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
         std::cout << "Is left of line: " << isLeftOfLine(hardware) << "\n";
@@ -180,7 +182,10 @@ void lineFollowKiwi() {
         } else {
             std::cout << "Give reward: " << 2-(fabs(action[0] - 0.0669)+fabs(action[1]-0.933)+fabs(action[2]-0.5))/3.0;std::cout.flush();
         }
-    
+        
+        std::cout << "Best left " << learner.chooseBoltzmanAction({1}, 0)[0] << "\n";
+        std::cout << "Best right  " << learner.chooseBoltzmanAction({-1}, 0)[0] << "\n";
+
         double reward = connection.getReward();
         if(fabs(reward - (-2)) < 0.001) break;
         begin = clock();
@@ -196,7 +201,7 @@ void lineFollowKiwi() {
     learner.store(&ostream);
 
     while(true) {
-        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, 0.001);
+        rl::Action action = learner.chooseBoltzmanAction({!isLeftOfLine(hardware) ? -1 : 1}, 0);
         hardware.setMotors(action[0]*maxMove, action[1]*maxMove, action[2]*maxMove);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
         std::cout << "Action: " << action[0] << " " << action[1] << " " << action[2] << "\n";
@@ -215,8 +220,9 @@ void ballFollow() {
     } while(receiverNum != 5 && receiverNum != 6);
 
     Hardware hardware;
-
-    rl::WireFitQLearn learner = rl::WireFitQLearn(1, 1, 1, 8, 4, {-1}, {1}, 6, new rl::LSInterpolator(), net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
+    
+    rl::FidoControlSystem learner(1, {-1}, {1}, 6);
+    //rl::WireFitQLearn learner = rl::WireFitQLearn(1, 1, 1, 8, 4, {-1}, {1}, 6, new rl::LSInterpolator(), new net::Backpropagation(0.01, 0.9, 0.05, 5000), 1, 0);
     learner.reset();
     
     std::cout << "Done with initialization\n";
@@ -227,7 +233,7 @@ void ballFollow() {
         std::cout << " x: " << x << "\n";
 
         clock_t begin = clock();
-        rl::Action action = learner.chooseBoltzmanAction({x < 0}, exploration);
+        rl::Action action = learner.chooseBoltzmanAction({x < 0 ? 1 : -1}, 0.4);
         choosingTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Action: " << action[0] << "\n";
 
@@ -244,9 +250,12 @@ void ballFollow() {
         std::cout << "Training...\n";std::cout.flush();
 
         begin = clock();
-        learner.applyReinforcementToLastAction(reward, {x < 0});
+        learner.applyReinforcementToLastAction(reward, {x < 0 ? 1 : -1});
         updateTimes.push_back(double(clock() - begin) / CLOCKS_PER_SEC);
         std::cout << "Done training...\n";std::cout.flush();
+
+        std::cout << "Best > 0: " << learner.chooseBoltzmanAction({-1}, 0)[0] << "\n";
+        std::cout << "Best < 0: " << learner.chooseBoltzmanAction({1}, 0)[0] << "\n";
     }
 
     printStats(choosingTimes);
@@ -255,10 +264,11 @@ void ballFollow() {
     while(true) {
         int z, x; 
         hardware.getZX(z, x);
-        rl::Action action = learner.chooseBoltzmanAction({x < 0}, 0.001);
+        //std::cout << "X: " << x << "\n";
+        rl::Action action = learner.chooseBoltzmanAction({x < 0 ? 1 : -1}, 0);
         hardware.goHolonomic(0, 100, action[0]*maxDisplacementComponent);
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        std::cout << "Action: " << action[0] << "\n";
+        //std::cout << "Action: " << action[0] << "\n";
     }
 }
 
@@ -280,8 +290,8 @@ void runModel(std::string filename) {
 int main() {
     srand(time(NULL));
     //runModel("2016764524.txt");
-    ballFollow();
-    
+    //ballFollow();
+    lineFollowKiwi();
     /*Hardware h;
     int z, x;
     while(true) {

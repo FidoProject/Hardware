@@ -2,7 +2,7 @@ CXXFLAGS += -std=c++11
 SOURCES=$(shell find . -name "*.cpp") ../Hardware.cpp ../../../Connection.cpp
 OBJECTS=$(SOURCES:%.cpp=%.o)
 TARGET=thingTwo.o
-FIDOLIB=/usr/local/lib/fido.a
+FIDOLIB=../../../../Fido/build/fido.a
 LDFLAGS=-pthread -lwiringPi
 
 .PHONY: all
