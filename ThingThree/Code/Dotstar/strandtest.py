@@ -64,6 +64,25 @@ def cycle(color=-1):
 		tail += 1
 		if (tail >= numPixels): tail = 0
 
+def pulseCycle(color, cycles):
+	head = 0
+	tail = -10
+	iters = 0
+
+	while iters < cycles:
+		strip.setPixelColor(head,color)
+		strip.setPixelColor(tail,0)
+		strip.show()
+		time.sleep(0.02)
+
+		head += 1
+		if (head >= numPixels):
+			head = 0
+			iters++
+
+		tail += 1
+		if (tail >= numPixels): tail = 0
+
 def breathe(color):
 	while True:
 		millis = int(round(time.time() * 1000))
@@ -73,4 +92,4 @@ def breathe(color):
 		strip.show()
                 time.sleep(0.02)
 
-cycle()
+pulseCycle(0x00FF00,1)
