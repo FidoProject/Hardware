@@ -119,11 +119,11 @@ void Hardware::gripper(bool open) {
 	}
 }
 
-bool Hardware::setJoints(double i, double j, double k) {
+bool Hardware::setJoints(double i, double j, double k, bool override = false) {
 	double x, y, z;
 	forwardKinematicsXY(i, j, k, &x, &y, &z);
 
-	if (!safetyCheck(x,y,z)) return false;
+	if (!override && !safetyCheck(x,y,z)) return false;
 
 	int iVal, jVal, kVal;
 	scaleServos(i, j, k, &iVal, &jVal, &kVal);
