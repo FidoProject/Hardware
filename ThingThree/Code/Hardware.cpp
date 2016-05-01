@@ -119,7 +119,7 @@ void Hardware::gripper(bool open) {
 	}
 }
 
-bool Hardware::setJoints(double i, double j, double k, bool override = false) {
+bool Hardware::setJoints(double i, double j, double k, bool override /* = false */) {
 	double x, y, z;
 	forwardKinematicsXY(i, j, k, &x, &y, &z);
 
