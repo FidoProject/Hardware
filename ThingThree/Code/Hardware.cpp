@@ -130,7 +130,7 @@ bool Hardware::setJoints(double i, double j, double k) {
 	return true;
 }
 
-static bool Hardware::safetyCheck(double x, double y, double z) {
+bool Hardware::safetyCheck(double x, double y, double z) {
 	double radius = sqrt(x*x + y*y + pow(z-SPHERE_CENTER_Z,2));
 	if (radius < SPHERE_RADIUS) return false;
 	else if (z < -5) return false;
@@ -147,10 +147,6 @@ bool Hardware::setEffectorPosition(double theta, double x, double y) {
 void Hardware::moveJoint(int id, int position) {
 	writeCommand('W','p',id);
 	writeInt(position);
-}
-
-static double Hardware::map(double x, double in_min, double in_max, double out_min, double out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 void Hardware::scaleServos(double iAng, double jAng, double kAng, int *iVal, int *jVal, int *kVal) {
