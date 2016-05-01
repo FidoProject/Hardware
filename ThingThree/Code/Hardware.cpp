@@ -45,7 +45,7 @@ void Hardware::neutral() {
 
 void Hardware::poise() {
 	moveJoint(1, 512);
-	moveJoint(2, 880);
+	moveJoint(2, 860);
 	moveJoint(3, 960);
 }
 

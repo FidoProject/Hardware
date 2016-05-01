@@ -1,6 +1,6 @@
 #define START_1 512
-#define START_2 880
-#define START_3 950
+#define START_2 860
+#define START_3 960
 #define GRIPPER_OPEN 800
 #define GRIPPER_CLOSED 500
 
@@ -125,8 +125,8 @@ void processRead(byte cmd, byte id) {
   			int sonarOne = analogRead(SONAR_LEFT);
     			int sonarTwo = analogRead(SONAR_RIGHT);
   
-  			SerialUSB.println(sonarOne);
-  			SerialUSB.println(sonarTwo);
+  			Serial2.println(sonarOne);
+  			Serial2.println(sonarTwo);
 			break;
 		}
 	}
