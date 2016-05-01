@@ -17,7 +17,7 @@ double randOutput() {
 	return ((double) rand() / (RAND_MAX))*2.0 - 1.0;
 }
 
-bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
+bool executeScaledAngles(Hardware *hardware, double i, double j, double k) {
 	double iAng = Hardware::map(i, -1, 1, I_MIN_SAFE_ANG, I_MAX_SAFE_ANG);
 	double jAng = Hardware::map(j, -1, 1, J_MIN_SAFE_ANG, J_MAX_SAFE_ANG);
 	double kAng = Hardware::map(k, -1, 1, K_MIN_SAFE_ANG, K_MAX_SAFE_ANG);
