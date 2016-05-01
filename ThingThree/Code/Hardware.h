@@ -15,8 +15,8 @@ public:
 	void gripper(bool open);
 
 	bool setEffectorPosition(double theta, double x, double y);
-	bool setJointsUnsafe(double i, double j, double k, bool override);
-	bool setJoints(double i, double j, double k, bool override);
+	bool setJointsUnsafe(double i, double j, double k, bool override = false);
+	bool setJoints(double i, double j, double k, bool override = false);
 
 	void setSpeed(int id, int speed);
 	void setTorque(int id, int torque);
