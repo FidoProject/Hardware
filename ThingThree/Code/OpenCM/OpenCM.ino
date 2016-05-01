@@ -127,6 +127,8 @@ void processRead(byte cmd, byte id) {
   
   			Serial2.println(sonarOne);
   			Serial2.println(sonarTwo);
+  
+			digitalWrite(SONAR_TRIGGER, LOW);
 			break;
 		}
 	}

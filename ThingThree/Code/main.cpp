@@ -5,13 +5,10 @@
 
 int main() {
 	Hardware hand;
-
 	hand.poise();
-	
-	usleep(1000000);
-	hand.bad();
-	usleep(1000000);
-	hand.good();
-	usleep(1000000);
-	hand.neutral();
+
+	int a, b;
+	hand.getSonars(&a, &b);
+	std::cout << "Sonar Left: " << a << "\n";
+	std::cout << "Sonar Right: " << b << "\n";
 }

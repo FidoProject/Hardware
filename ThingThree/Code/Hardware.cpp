@@ -63,6 +63,8 @@ int Hardware::getServoError(int id) {
 void Hardware::getSonars(int *sonarOne, int *sonarTwo) {
 	writeCommand('R','v',128);
 
+	usleep(100000);
+
 	std::string val;
 	while (serialDataAvail(fd) > 0) val += serialGetchar(fd);
 
