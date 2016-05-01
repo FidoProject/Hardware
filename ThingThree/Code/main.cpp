@@ -48,12 +48,12 @@ int main() {
 	Hardware hand;
 	hand.poise();
 
-	int THRESH = 300;
+	int THRESH = 400;
 
 	while (true) {
 		int l, r; hand.getSonars(&l, &r);
 		std::cout << "Sonars: (" << l << "," << r << ")\n";
-		double i = (l < THRESH || r < THRESH) ? ((l < r) ? 65 : -65) : 0;
+		double i = (l > THRESH || r > THRESH) ? ((l > r) ? 65 : -65) : 0;
 		hand.setJoints(i, 50, 40);
 	}
 }
