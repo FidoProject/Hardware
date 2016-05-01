@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import time, math
+import time, math, sys
 from dotstar import Adafruit_DotStar
 
 numPixels = 24
@@ -98,4 +98,4 @@ def breathe(color):
 		strip.show()
                 time.sleep(0.02)
 
-pulseCycle(0x00FF00,1)
+pulseCycle(int(sys.argv[0],0),int(sys.argv[1]))
