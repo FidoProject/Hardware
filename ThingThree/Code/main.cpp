@@ -68,13 +68,14 @@ void proceduralPingPong(Hardware *hand) {
 }
 
 void proceduralDrawing(Hardware *hand) {
-	hand->setJoints(-10, 100, 40);
-	usleep(5000000);
-	hand->setJoints(10, 100, 40);
-	usleep(5000000);
+	hand->setJoints(-10, 120, 50);
+	usleep(3000000);
+	hand->setJoints(10, 120, 50);
+	usleep(3000000);
 	hand->setJoints(10, 100, 30);
-	usleep(5000000);
+	usleep(3000000);
 	hand->setJoints(-10, 100, 30);
+	hand->poise();
 }
 
 int main() {
