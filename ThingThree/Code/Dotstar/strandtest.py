@@ -78,7 +78,7 @@ def pulseCycle(color, cycles):
 		head += 1
 		if (head >= numPixels):
 			head = 0
-			iters++
+			iters += 1
 
 		tail += 1
 		if (tail >= numPixels): tail = 0
