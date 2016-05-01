@@ -11,7 +11,7 @@
 #define J_MAX_SAFE_ANG 120
 
 #define K_MIN_SAFE_ANG 0
-#define K_MAX_SAFE_ANG 180
+#define K_MAX_SAFE_ANG 90
 
 
 bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {

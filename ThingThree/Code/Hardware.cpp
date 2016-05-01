@@ -140,7 +140,8 @@ bool Hardware::setJoints(double i, double j, double k) {
 bool Hardware::safetyCheck(double x, double y, double z) {
 	double radius = sqrt(x*x + y*y + pow(z-SPHERE_CENTER_Z,2));
 	if (radius < SPHERE_RADIUS) return false;
-	else if (z < -5) return false;
+	else if (z < -5 || z > 24) return false;
+	else if (y < -1) return false;
 	else return true;
 }
 
