@@ -51,8 +51,8 @@ int main() {
 	int THRESH = 300;
 
 	while (true) {
-		int l, r; hardware->getSonars(&l, &r);
+		int l, r; hand.getSonars(&l, &r);
 		double i = (l < THRESH || r < THRESH) ? ((l < r) ? 65 : -65) : 0;
-		hardware->setJoints(i, 50, 40);
+		hand.setJoints(i, 50, 40);
 	}
 }
