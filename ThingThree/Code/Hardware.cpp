@@ -32,15 +32,15 @@ Hardware::Hardware() {
 }
 
 void Hardware::good() {
-	system("good");
+	system("sudo python ~/Hardware/ThingThree/Code/Dotstar/strandtest.py 0xFF0000 1 &");
 }
 
 void Hardware::bad() {
-	system("bad");
+        system("sudo python ~/Hardware/ThingThree/Code/Dotstar/strandtest.py 0x00FF00  1 &");
 }
 
 void Hardware::neutral() {
-	system("neutral");
+	system("sudo python ~/Hardware/ThingThree/Code/Dotstar/strandtest.py 0x0000FF 1 &");
 }
 
 void Hardware::poise() {
