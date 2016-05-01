@@ -66,8 +66,8 @@ void Hardware::getSonars(int *sonarOne, int *sonarTwo) {
 	std::string val;
 	while (serialDataAvail(fd) > 0) val += serialGetchar(fd);
 
-	std::string one = str.substr(0, val.find("\n"));
-	std::string two = str.substr(val.find("\n"));
+	std::string one = val.substr(0, val.find("\n"));
+	std::string two = val.substr(val.find("\n"));
 
 	*sonarOne = atoi(one.c_str());
 	*sonarTwo = atoi(two.c_str());
