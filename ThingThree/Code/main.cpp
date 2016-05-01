@@ -60,10 +60,11 @@ int main() {
 		std::cout << "Sonars: (" << l << "," << r << ")\n";
 
 		int delay = 0;
+		double i = 0;
 		if (abs(r-l) > THRESH) {
 			i = ((r > l) ? -30:30);
 			delay = 500000;
-		} else i = 0;
+		}
 
 		hand.setJoints(i, 180, 40, true);
 		usleep(delay);
