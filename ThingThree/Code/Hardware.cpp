@@ -120,11 +120,8 @@ void Hardware::gripper(bool open) {
 }
 
 bool Hardware::setJoints(double i, double j, double k) {
-	double y, z;
-	forwardKinematicsXY(j, k, &y, &z);
-
-	double x = -y*sin(i*0.0174532925);
-	y *= cos(i*0.0174532925);
+	double x, y, z;
+	forwardKinematicsXY(i, j, k, &x, &y, &z);
 
 	if (!safetyCheck(x,y,z)) return false;
 
@@ -163,10 +160,15 @@ void Hardware::scaleServos(double iAng, double jAng, double kAng, int *iVal, int
 	*kVal = round(map(kAng,K_MIN_ANG,K_MAX_ANG,K_MIN_VAL,K_MAX_VAL));
 }
 
-void Hardware::forwardKinematicsXY(double theta1, double theta2, double *x, double *y) {
+void Hardware::forwardKinematicsXY(double theta0, double theta1, double theta2, double *x, double *y, double *z) {
 	double theta3 = theta2 - (180 - theta1);
-	*x = LENGTH_ONE*cos(theta1*0.0174533) + LENGTH_TWO*cos(theta3*0.0174533);
-	*y = LENGTH_ONE*sin(theta1*0.0174533) + LENGTH_TWO*sin(theta3*0.0174533);
+	*y = LENGTH_ONE*cos(theta1*0.0174533) + LENGTH_TWO*cos(theta3*0.0174533);
+	*z = LENGTH_ONE*sin(theta1*0.0174533) + LENGTH_TWO*sin(theta3*0.0174533);
+
+	*x = -y*sin(theta0*0.0174532925);
+	*y *= cos(theta0*0.0174532925);
+
+	std::cout << "Thetas: (" << theta0 << "," << theta1 << "," << theta2 << "), Position: (" << *x << "," << *y << ")\n";
 }
 
 void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *theta2) {
