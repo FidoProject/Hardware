@@ -168,7 +168,7 @@ void Hardware::forwardKinematicsXY(double theta0, double theta1, double theta2, 
 	*x = -*y*sin(theta0*0.0174532925);
 	*y *= cos(theta0*0.0174532925);
 
-	std::cout << "Thetas: (" << theta0 << "," << theta1 << "," << theta2 << "), Position: (" << *x << "," << *y << "," << *z << ")\n";
+	//std::cout << "Thetas: (" << theta0 << "," << theta1 << "," << theta2 << "), Position: (" << *x << "," << *y << "," << *z << ")\n";
 }
 
 void Hardware::inverseKinematicsXY(double x, double y, double *theta1, double *theta2) {
