@@ -4,10 +4,20 @@
 #include <stdlib.h>
 #include <iostream>
 
+#define I_MIN_SAFE_ANG -65
+#define I_MAX_SAFE_ANG 65
+
+#define J_MIN_SAFE_ANG 35
+#define J_MAX_SAFE_ANG 120
+
+#define K_MIN_SAFE_ANG 0
+#define K_MAX_SAFE_ANG 180
+
+
 bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
-	double iAng = Hardware::map(i, -1, 1, I_MIN_ANG, I_MAX_ANG);
-	double jAng = Hardware::map(j, -1, 1, J_MIN_ANG, J_MAX_ANG);
-	double kAng = Hardware::map(k, -1, 1, K_MIN_ANG, K_MAX_ANG);
+	double iAng = Hardware::map(i, -1, 1, I_MIN_SAFE_ANG, I_MAX_SAFE_ANG);
+	double jAng = Hardware::map(j, -1, 1, J_MIN_SAFE_ANG, J_MAX_SAFE_ANG);
+	double kAng = Hardware::map(k, -1, 1, K_MIN_SAFE_ANG, K_MAX_SAFE_ANG);
 
 	return hardware->setJoints(iAng, jAng, kAng);
 }
