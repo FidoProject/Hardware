@@ -14,7 +14,7 @@
 #define K_MAX_SAFE_ANG 90
 
 double randOutput() {
-	return ((double) rand() / (RAND_MAX))*2.0 - 1;
+	return ((double) rand() / (RAND_MAX))*2.0 - 1.0;
 }
 
 bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
@@ -27,7 +27,7 @@ bool executeScaledAngles(Hardware *hardware, int i, int j, int k) {
 
 void stressTest(Hardware *hardware, int trials) {
 	for (int i=0; i<trials; i++) {
-		if (executeScaledAngles(hardware,rand()*2.0-1,rand()*2.0-1,rand()*2.0-1)) {
+		if (executeScaledAngles(hardware,randOutput(),randOutput(),randOutput())) {
 			std::cout << "Move executed.\n";
 		} else {
 			std::cout << "Move fail-safed.\n";
