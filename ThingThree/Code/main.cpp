@@ -44,6 +44,7 @@ void testSonars(Hardware *hardware, int trials) {
 }
 
 int main() {
+	srand(time(NULL));
 	Hardware hand;
 	hand.poise();
 
