@@ -144,11 +144,11 @@ bool Hardware::setJoints(double i, double j, double k, bool override /* = false 
 		last3 = k;
 	} else {
 		while(fabs(i-last1) > 1 || fabs(j-last2) > 1 || fabs(k-last3) > 1) {
-			last1 += double(i-last1)*0.05;
-			last2 += double(j-last2)*0.05;
-			last3 += double(k-last3)*0.05;
+			last1 += double(i-last1)*0.09;
+			last2 += double(j-last2)*0.09;
+			last3 += double(k-last3)*0.09;
 			setJointsUnsafe(last1, last2, last3, override);
-			usleep(30000);
+			usleep(50000);
 		}
 	}
 }
