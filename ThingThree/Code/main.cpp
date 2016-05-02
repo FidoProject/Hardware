@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include "../../../Fido/include/Fido.h"
+#include "../../Connection.h"
+
 #define I_MIN_SAFE_ANG -65
 #define I_MAX_SAFE_ANG 65
 
@@ -79,6 +82,25 @@ void proceduralDrawing(Hardware *hand) {
 	hand->setJoints(-6, 95, 50);
     usleep(500000);
 	hand->poise();
+}
+
+void drawSquare() {
+	std::vector< std::vector<int> > points = {{-6, 95, 50}, {6, 95, 50}, {6, 100, 30}, {-6, 100, 30}};
+	Connection connection;
+	Hardware hand;
+	rl::FidoControlSystem learner(1, {-1}, {1}, 4);
+
+	int currentIndex = 0;
+	hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
+	while(true) {
+		int currentIndex = (int)(5*learner.chooseBoltzmanActionDynamic({currentIndex*0.2})[0]);
+		
+		hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
+
+		double reward = connection.getReward();
+		if(fabs(reward - (-2)) < 0.001) break;
+		learner.applyReinforcementToLastAction(reward, {currentIndex*0.2});
+	}
 }
 
 int main() {
