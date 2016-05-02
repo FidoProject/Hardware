@@ -58,12 +58,12 @@ void proceduralPingPong(Hardware *hand) {
 		int delay = 0;
 		double i = 0;
 		if (abs(r-l) > THRESH) {
-			i = ((r > l) ? -30:30);
+			i = (r > l) ? -30 : 30;
 			delay = 500000;
 		}
 
-		hand->setJoints(i, 180, 40, true);
-		usleep(delay);
+		//hand->setJoints(i, 180, 40, true);
+		//usleep(delay);
 	}
 }
 
@@ -92,5 +92,6 @@ int main() {
 
 	usleep(500000);
 
-	proceduralDrawing(&hand);
+	proceduralPingPong(&hand);
+	//proceduralDrawing(&hand);
 }
