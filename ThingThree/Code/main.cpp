@@ -45,7 +45,7 @@ void testSonars(Hardware *hardware, int trials) {
 
 void proceduralPingPong(Hardware *hand) {
 	int THRESH = 50;
-	int NUM_SONAR_READINGS = 3;
+	int NUM_SONAR_READINGS = 1;
 
 	hand->setJoints(0, 180, 45);
 
@@ -90,15 +90,5 @@ void proceduralDrawing(Hardware *hand) {
 
 int main() {
 	srand(time(NULL));
-	Hardware hand;
-	hand.poise();
-
-	usleep(500000);
-
-	hand.clap(3);
-
-	usleep(500000);
-
-	proceduralPingPong(&hand);
 	//proceduralDrawing(&hand);
 }
