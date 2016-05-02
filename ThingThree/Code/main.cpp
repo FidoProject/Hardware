@@ -47,7 +47,7 @@ void proceduralPingPong(Hardware *hand) {
 	int THRESH = 50;
 	int NUM_SONAR_READINGS = 3;
 
-	hand->setJoints(0, 150, 30);
+	hand->setJoints(0, 150, 60);
 
 	while (true) {
 		int l, r;
