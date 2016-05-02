@@ -105,35 +105,37 @@ void drawSquare() {
 	int currentIndex = 0;
 	hand.poise();
     hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
-	while(true) {
-		int offset = (int)(learner.chooseBoltzmanActionDynamic({1})[0]);
-        std::cout << "ACTION: " << offset << "\n";
-        int gg = currentIndex+offset;
-        if(gg < 0) gg = 3
-        if(gg > 3) gg = 0;
-		hand.setJoints(points[gg][0], points[gg][1], points[gg][2]);
-        std::cout << "DONEwith this\n"; std::cout.flush();
-        for(int a = 0; a < 4; a++) {
-            std::cout << "best action: " << int(learner.chooseBoltzmanAction({1}, 0)[0]) << "\n";
-        }
-        std::cout << "GIVE: " << (1 - fabs(1-offset)) << "\n";
-        std::cout.flush();
-        
-        double reward = connection.getReward();
+    while(true) {
+	int offset = (int)(learner.chooseBoltzmanActionDynamic({1})[0]);
+	std::cout << "current: " << current << "\n";
+	std::cout << "offset: " << offset << "\n"; std::cout.flush();
+	
+	int gg = currentIndex+offset;
+	if(gg < 0) gg = 3
+	if(gg > 3) gg = 0;
+	hand.setJoints(points[gg][0], points[gg][1], points[gg][2]);
+	std::cout << "Done with setting joints\n"; std::cout.flush();
+	
+	
+	std::cout << "best action: " << int(learner.chooseBoltzmanAction({1}, 0)[0]) << "\n";
+	std::cout << "GIVE as reward: " << (1 - fabs(1-offset)) << "\n";
+	std::cout.flush();
 
-		if (fabs(reward) < 0.001) hand.neutral();
-		else if (reward > 0) hand.good();
-		else if (reward < 0) hand.bad();
-		else if (fabs(reward - (-2)) < 0.001) break;
-		
-		learner.applyReinforcementToLastAction(reward, {1});
-	    currentIndex ++;
+	double reward = connection.getReward();
+
+	if (fabs(reward) < 0.001) hand.neutral();
+	else if (reward > 0) hand.good();
+	else if (reward < 0) hand.bad();
+	else if (fabs(reward - (-2)) < 0.001) break;
+	std::cout << "REWARD GIVEN: " << reward << "\n";
+	learner.applyReinforcementToLastAction(reward, {1});
+    	currentIndex++;
     }
     int current = 0;
     while(true) {
-        hand.setJoints(points[current+int(learner.chooseBoltzmanAction({1}, 0)[0])][0], points[currentIndex+int(learner.chooseBoltzmanAction({1}, 0)[0])][1], points[currentIndex+int(learner.chooseBoltzmanAction({1}, 0)[0])][2]);
-        current += int(learner.chooseBoltzmanAction({1}, 0)[0]);
-        current %= 4;
+    	current = current+int(learner.chooseBoltzmanAction({1}, 0)[0]);
+    	current %= 4;
+        hand.setJoints(points[current][0], points[current][1], points[current][2]);
     }
 }
 
