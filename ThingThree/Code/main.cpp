@@ -94,23 +94,33 @@ void proceduralDrawing(Hardware *hand) {
 void drawSquare() {
 	std::vector< std::vector<int> > points = {{-6, 95, 50}, {6, 95, 50}, {6, 100, 30}, {-6, 100, 30}};
 	Connection connection;
-	Hardware hand;
-	rl::FidoControlSystem learner(1, {-1}, {1}, 4);
+	int receiverNum;
+        do {
+                    receiverNum = atoi(connection.getString().c_str());
+                        } while(receiverNum != 5 && receiverNum != 6);
+    
+    Hardware hand;
+	rl::FidoControlSystem learner(1, {0}, {0.75}, 4);
 
 	int currentIndex = 0;
-	hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
+	hand.poise();
+    hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
 	while(true) {
-		int currentIndex = (int)(5*learner.chooseBoltzmanActionDynamic({currentIndex*0.2})[0]);
-		
-		hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
+		int currentIndex = (int)(4*learner.chooseBoltzmanActionDynamic({currentIndex*0.25})[0]);
+        std::cout << "ACTION: " << currentIndex << "\n";
+
+		hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);        
+        for(int a = 0; a < 4; a++) {
+            std::cout << "best action: " << int(learner.chooseBoltzmanAction({a*0.25}, 0)[0]*4) << "\n"; 
+        }
 
 		double reward = connection.getReward();
 		if(fabs(reward - (-2)) < 0.001) break;
-		learner.applyReinforcementToLastAction(reward, {currentIndex*0.2});
+		learner.applyReinforcementToLastAction(reward, {currentIndex*0.25});
 	}
 }
 
 int main() {
 	srand(time(NULL));
-	//proceduralDrawing(&hand);
+    drawSquare();
 }
