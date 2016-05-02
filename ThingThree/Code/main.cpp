@@ -98,7 +98,7 @@ void drawSquare() {
         do {
                     receiverNum = atoi(connection.getString().c_str());
                         } while(receiverNum != 5 && receiverNum != 6);
-    
+
     Hardware hand;
 	rl::FidoControlSystem learner(1, {0}, {0.75}, 4);
 
@@ -109,13 +109,18 @@ void drawSquare() {
 		int currentIndex = (int)(4*learner.chooseBoltzmanActionDynamic({currentIndex*0.25})[0]);
         std::cout << "ACTION: " << currentIndex << "\n";
 
-		hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);        
+		hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
         for(int a = 0; a < 4; a++) {
-            std::cout << "best action: " << int(learner.chooseBoltzmanAction({a*0.25}, 0)[0]*4) << "\n"; 
+            std::cout << "best action: " << int(learner.chooseBoltzmanAction({a*0.25}, 0)[0]*4) << "\n";
         }
 
 		double reward = connection.getReward();
-		if(fabs(reward - (-2)) < 0.001) break;
+
+		if (fabs(reward < 0.001) hand.neutral();
+		else if (reward > 0) hand.good();
+		else if (reward < 0) hand.bad();
+		else if (fabs(reward - (-2)) < 0.001) break;
+		
 		learner.applyReinforcementToLastAction(reward, {currentIndex*0.25});
 	}
 }
