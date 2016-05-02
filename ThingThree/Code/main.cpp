@@ -47,8 +47,10 @@ void testSonars(Hardware *hardware, int trials) {
 }
 
 void proceduralPingPong(Hardware *hand) {
-	int THRESH = 300;
+	int THRESH = 50;
 	int NUM_SONAR_READINGS = 3;
+
+	hand->setJoints(0, 180, 45);
 
 	while (true) {
 		int l, r;
@@ -56,22 +58,27 @@ void proceduralPingPong(Hardware *hand) {
 			int tempL, tempR; hand->getSonars(&tempL, &tempR);
 			l += tempL; r += tempR;
 		} l /= NUM_SONAR_READINGS; r /= NUM_SONAR_READINGS;
-		std::cout << "Sonars: (" << l << "," << r << ")\n";
+		//std::cout << "Sonars: (" << l << "," << r << ")\n";
 
 		int delay = 0;
 		double i = 0;
 		if (abs(r-l) > THRESH) {
-			i = ((r > l) ? -30:30);
-			delay = 500000;
-		}
+			if (r > l) {
+				std::cout << "RIGHT\n";
+				i = -30;
+			} else {
+				std::cout << "LEFT\n";
+				i = 30;
+			} delay = 500000;
+		} else std::cout << "NOTHING\n";
 
-		hand->setJoints(i, 180, 40, true);
-		usleep(delay);
+		//hand->setJoints(i, 180, 40, true);
+		//usleep(delay);
 	}
 }
 
 void proceduralDrawing(Hardware *hand) {
-	hand->setJoints(-6, 90, 50);
+	hand->setJoints(-6, 95, 50);
     usleep(500000);
 	hand->setJoints(6, 95, 50);
 	usleep(500000);
@@ -114,5 +121,6 @@ int main() {
 
 	usleep(500000);
 
-	proceduralDrawing(&hand);
+	proceduralPingPong(&hand);
+	//proceduralDrawing(&hand);
 }
