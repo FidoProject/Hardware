@@ -100,29 +100,41 @@ void drawSquare() {
                         } while(receiverNum != 5 && receiverNum != 6);
 
     Hardware hand;
-	rl::FidoControlSystem learner(1, {0}, {0.75}, 4);
+	rl::FidoControlSystem learner(1, {-1}, {1}, 3);
 
 	int currentIndex = 0;
 	hand.poise();
     hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
 	while(true) {
-		int currentIndex = (int)(4*learner.chooseBoltzmanActionDynamic({currentIndex*0.25})[0]);
-        std::cout << "ACTION: " << currentIndex << "\n";
-
-		hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
+		int offset = (int)(learner.chooseBoltzmanActionDynamic({1})[0]);
+        std::cout << "ACTION: " << offset << "\n";
+        int gg = points[currentIndex+offset][0]+offset;
+        if(gg < 0) gg = 3
+        if(gg > 3) gg = 0;
+		hand.setJoints(points[currentIndex+offset][0], points[currentIndex+offset][1], points[currentIndex+offset][2]);
+        std::cout << "DONEwith this\n"; std::cout.flush();
         for(int a = 0; a < 4; a++) {
-            std::cout << "best action: " << int(learner.chooseBoltzmanAction({a*0.25}, 0)[0]*4) << "\n";
+            std::cout << "best action: " << int(learner.chooseBoltzmanAction({1}, 0)[0]) << "\n";
         }
+        std::cout << "GIVE: " << (1 - fabs(1-offset)) << "\n";
+        std::cout.flush();
+        
+        double reward = connection.getReward();
 
-		double reward = connection.getReward();
-
-		if (fabs(reward < 0.001) hand.neutral();
+		if (fabs(reward) < 0.001) hand.neutral();
 		else if (reward > 0) hand.good();
 		else if (reward < 0) hand.bad();
 		else if (fabs(reward - (-2)) < 0.001) break;
 		
-		learner.applyReinforcementToLastAction(reward, {currentIndex*0.25});
-	}
+		learner.applyReinforcementToLastAction(reward, {1});
+	    currentIndex += offset;
+    }
+    int current = 0;
+    while(true) {
+        hand.setJoints(points[current+int(learner.chooseBoltzmanAction({1}, 0)[0])][0], points[currentIndex+int(learner.chooseBoltzmanAction({1}, 0)[0])][1], points[currentIndex+int(learner.chooseBoltzmanAction({1}, 0)[0])][2]);
+        current++;
+        current %= 4;
+    }
 }
 
 int main() {
