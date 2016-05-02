@@ -72,10 +72,10 @@ void proceduralDrawing(Hardware *hand) {
     std::cout << "After once\n";
     usleep(3000000);
     std::cout << "Now asfde\n";
-	hand->setJoints(10, 140, 50);
+	hand->setJoints(10, 70, 50);
 	usleep(3000000);
     std::cout << "Now asfd\n";
-	hand->setJoints(10, 100, 30);
+	hand->setJoints(10, 70, 30);
 	usleep(3000000);
     std::cout << "Now again\n";
 	hand->setJoints(-10, 100, 30);
@@ -87,6 +87,8 @@ int main() {
 	srand(time(NULL));
 	Hardware hand;
 	hand.poise();
+
+	usleep(3000000);
 
 	hand.clap(3);
 
