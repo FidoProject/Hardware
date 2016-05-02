@@ -49,7 +49,7 @@ void Hardware::neutral() {
 }
 
 void Hardware::poise() {
-	setJoints(0, 180, 15);
+	setJoints(0, 180, 0);
 }
 
 void Hardware::clap(int claps) {
