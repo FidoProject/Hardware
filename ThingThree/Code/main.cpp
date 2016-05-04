@@ -106,12 +106,12 @@ void drawSquare() {
 	hand.poise();
     hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
     while(true) {
-	int offset = (int)(learner.chooseBoltzmanActionDynamic({1})[0]);
-	std::cout << "current: " << current << "\n";
+	int offset = (int)(learner.chooseBoltzmanAction({1}, 10)[0]);
+	std::cout << "current: " << currentIndex << "\n";
 	std::cout << "offset: " << offset << "\n"; std::cout.flush();
 	
 	int gg = currentIndex+offset;
-	if(gg < 0) gg = 3
+	if(gg < 0) gg = 3;
 	if(gg > 3) gg = 0;
 	hand.setJoints(points[gg][0], points[gg][1], points[gg][2]);
 	std::cout << "Done with setting joints\n"; std::cout.flush();
@@ -125,16 +125,18 @@ void drawSquare() {
 
 	if (fabs(reward) < 0.001) hand.neutral();
 	else if (reward > 0) hand.good();
-	else if (reward < 0) hand.bad();
+	else if (reward < 0 && reward > -1.5) hand.bad();
 	else if (fabs(reward - (-2)) < 0.001) break;
 	std::cout << "REWARD GIVEN: " << reward << "\n";
 	learner.applyReinforcementToLastAction(reward, {1});
-    	currentIndex++;
+    	currentIndex += offset;
     }
+    std::cout << "EXITED OUT\n"; std::cout.flush();
     int current = 0;
     while(true) {
     	current = current+int(learner.chooseBoltzmanAction({1}, 0)[0]);
     	current %= 4;
+        std::cout << "current: " << current << "\n";
         hand.setJoints(points[current][0], points[current][1], points[current][2]);
     }
 }
