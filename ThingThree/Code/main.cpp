@@ -46,16 +46,18 @@ void testSonars(Hardware *hardware, int trials) {
 	}
 }
 
-void proceduralPingPong(Hardware *hand) {
+void proceduralPingPong() {
+	Hardware hand;
+
 	int THRESH = 50;
 	int NUM_SONAR_READINGS = 1;
 
-	hand->setJoints(0, 180, 45);
+	hand.setJoints(0, 180, 45);
 
 	while (true) {
 		int l, r;
 		for (int j=0; j<NUM_SONAR_READINGS; j++) {
-			int tempL, tempR; hand->getSonars(&tempL, &tempR);
+			int tempL, tempR; hand.getSonars(&tempL, &tempR);
 			l += tempL; r += tempR;
 		} l /= NUM_SONAR_READINGS; r /= NUM_SONAR_READINGS;
 		//std::cout << "Sonars: (" << l << "," << r << ")\n";
@@ -72,7 +74,7 @@ void proceduralPingPong(Hardware *hand) {
 			} delay = 500000;
 		} else std::cout << "NOTHING\n";
 
-		//hand->setJoints(i, 180, 40, true);
+		//hand.setJoints(i, 180, 40, true);
 		//usleep(delay);
 	}
 }
@@ -109,14 +111,14 @@ void drawSquare() {
 	int offset = (int)(learner.chooseBoltzmanAction({1}, 10)[0]);
 	std::cout << "current: " << currentIndex << "\n";
 	std::cout << "offset: " << offset << "\n"; std::cout.flush();
-	
+
 	int gg = currentIndex+offset;
 	if(gg < 0) gg = 3;
 	if(gg > 3) gg = 0;
 	hand.setJoints(points[gg][0], points[gg][1], points[gg][2]);
 	std::cout << "Done with setting joints\n"; std::cout.flush();
-	
-	
+
+
 	std::cout << "best action: " << int(learner.chooseBoltzmanAction({1}, 0)[0]) << "\n";
 	std::cout << "GIVE as reward: " << (1 - fabs(1-offset)) << "\n";
 	std::cout.flush();
@@ -143,5 +145,5 @@ void drawSquare() {
 
 int main() {
 	srand(time(NULL));
-    drawSquare();
+    proceduralPingPong();
 }
