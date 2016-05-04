@@ -56,11 +56,9 @@ void proceduralPingPong() {
 
 	while (true) {
 		int l, r;
-		for (int j=0; j<NUM_SONAR_READINGS; j++) {
-			int tempL, tempR; hand.getSonars(&tempL, &tempR);
-			l += tempL; r += tempR;
-		} l /= NUM_SONAR_READINGS; r /= NUM_SONAR_READINGS;
-		//std::cout << "Sonars: (" << l << "," << r << ")\n";
+		hand.getSonars(&l, &r);
+
+        std::cout << l << ", " << r << "\n";
 
 		int delay = 0;
 		double i = 0;
@@ -91,56 +89,6 @@ void proceduralDrawing(Hardware *hand) {
 	hand->setJoints(-6, 95, 50);
     usleep(500000);
 	hand->poise();
-}
-
-void drawSquare() {
-	std::vector< std::vector<int> > points = {{-6, 95, 50}, {6, 95, 50}, {6, 100, 30}, {-6, 100, 30}};
-	Connection connection;
-	int receiverNum;
-        do {
-                    receiverNum = atoi(connection.getString().c_str());
-                        } while(receiverNum != 5 && receiverNum != 6);
-
-    Hardware hand;
-	rl::FidoControlSystem learner(1, {-1}, {1}, 3);
-
-	int currentIndex = 0;
-	hand.poise();
-    hand.setJoints(points[currentIndex][0], points[currentIndex][1], points[currentIndex][2]);
-    while(true) {
-	int offset = (int)(learner.chooseBoltzmanAction({1}, 10)[0]);
-	std::cout << "current: " << currentIndex << "\n";
-	std::cout << "offset: " << offset << "\n"; std::cout.flush();
-
-	int gg = currentIndex+offset;
-	if(gg < 0) gg = 3;
-	if(gg > 3) gg = 0;
-	hand.setJoints(points[gg][0], points[gg][1], points[gg][2]);
-	std::cout << "Done with setting joints\n"; std::cout.flush();
-
-
-	std::cout << "best action: " << int(learner.chooseBoltzmanAction({1}, 0)[0]) << "\n";
-	std::cout << "GIVE as reward: " << (1 - fabs(1-offset)) << "\n";
-	std::cout.flush();
-
-	double reward = connection.getReward();
-
-	if (fabs(reward) < 0.001) hand.neutral();
-	else if (reward > 0) hand.good();
-	else if (reward < 0 && reward > -1.5) hand.bad();
-	else if (fabs(reward - (-2)) < 0.001) break;
-	std::cout << "REWARD GIVEN: " << reward << "\n";
-	learner.applyReinforcementToLastAction(reward, {1});
-    	currentIndex += offset;
-    }
-    std::cout << "EXITED OUT\n"; std::cout.flush();
-    int current = 0;
-    while(true) {
-    	current = current+int(learner.chooseBoltzmanAction({1}, 0)[0]);
-    	current %= 4;
-        std::cout << "current: " << current << "\n";
-        hand.setJoints(points[current][0], points[current][1], points[current][2]);
-    }
 }
 
 int main() {
