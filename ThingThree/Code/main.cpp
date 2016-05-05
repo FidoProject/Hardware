@@ -49,21 +49,29 @@ void testSonars(Hardware *hardware, int trials) {
 void proceduralPingPong() {
 	Hardware hand;
 
-	int THRESH = 50;
+	int THRESH = 300;
 	int NUM_SONAR_READINGS = 1;
 
 	hand.setJoints(0, 180, 45);
 
 	while (true) {
-		int l, r;
-		hand.getSonars(&l, &r);
+		double l = 0, r = 0;
+		const int NUM_READINGS = 3;
+        for(int a = 0; a < NUM_READINGS; a++) {
+            int tempL, tempR;
+            hand.getSonars(&tempL, &tempR);
+            l += tempL;
+            r += tempR;
+        }
+        l /= double(NUM_READINGS);
+        r /= double(NUM_READINGS);
 
         std::cout << l << ", " << r << "\n";
-
-		int delay = 0;
+		
+        int delay = 0;
 		double i = 0;
-		if (abs(r-l) > THRESH) {
-			if (r > l) {
+		if (fabs(r-l) > THRESH) {
+			if (r < l) {
 				std::cout << "RIGHT\n";
 				i = -30;
 			} else {
