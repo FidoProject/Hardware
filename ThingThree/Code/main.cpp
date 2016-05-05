@@ -49,14 +49,13 @@ void testSonars(Hardware *hardware, int trials) {
 void proceduralPingPong() {
 	Hardware hand;
 
-	int THRESH = 300;
-	int NUM_SONAR_READINGS = 1;
+	int THRESH = 200;
 
 	hand.setJoints(0, 180, 45);
 
 	while (true) {
 		double l = 0, r = 0;
-		const int NUM_READINGS = 3;
+		const int NUM_READINGS = 1;
         for(int a = 0; a < NUM_READINGS; a++) {
             int tempL, tempR;
             hand.getSonars(&tempL, &tempR);
@@ -66,22 +65,14 @@ void proceduralPingPong() {
         l /= double(NUM_READINGS);
         r /= double(NUM_READINGS);
 
-        std::cout << l << ", " << r << "\n";
+        std::cout << l << " " << r << "\n";
 		
-        int delay = 0;
-		double i = 0;
-		if (fabs(r-l) > THRESH) {
-			if (r < l) {
-				std::cout << "RIGHT\n";
-				i = -30;
-			} else {
-				std::cout << "LEFT\n";
-				i = 30;
-			} delay = 500000;
-		} else std::cout << "NOTHING\n";
+        if (fabs(r-l) > THRESH) {  
+		    hand.setJointsUnsafe((r > l ? 1 : -1)*30, 180, 40, true);
+            usleep(500000);
+		    hand.setJointsUnsafe(0, 180, 40, true);
+		}
 
-		//hand.setJoints(i, 180, 40, true);
-		//usleep(delay);
 	}
 }
 
@@ -110,5 +101,5 @@ void factoryLine() {
 
 int main() {
 	srand(time(NULL));
-    factoryLine();
+    proceduralPingPong();
 }
