@@ -102,10 +102,35 @@ void proceduralDrawing(Hardware *hand) {
 void factoryLine() {
 	Hardware hand;
 
-	for (double i=0; true; i+=0.1) {
-		hand.gripperGradient(0.5 + 0.5*sin(i));
-		usleep(50000);
-	}
+	hand.poise();
+
+	usleep(500000);
+
+	hand.gripperGradient(0.6);
+
+	hand.setJoints(-10, 95, 50);
+
+	usleep(500000);
+
+	hand.gripperGradient(0);
+
+	usleep(500000);
+
+	hand.setJoints(-10, 80, 60);
+
+	hand.setJoints(10, 80, 60);
+
+	hand.setJoints(10, 95, 50);
+
+	usleep(500000);
+
+	hand.gripper(0.6);
+
+	usleep(500000);
+
+	hand.setJoints(10, 80, 60);
+
+	hand.poise();
 }
 
 int main() {
