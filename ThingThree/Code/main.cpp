@@ -143,7 +143,16 @@ void drawSquare() {
     }
 }
 
+void factoryLine() {
+	Hardware hand;
+
+	for (double i=0; true; i+=0.1) {
+		hand.gripperGradient(0.5 + 0.5*sin(i));
+		usleep(50000);
+	}
+}
+
 int main() {
 	srand(time(NULL));
-    proceduralPingPong();
+    factoryLine();
 }
