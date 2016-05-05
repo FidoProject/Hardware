@@ -106,9 +106,9 @@ void factoryLine() {
 
 	usleep(500000);
 
-	hand.setJoints(-10, 120, 60);
+	hand.setJoints(-10, 140, 60);
 
-	hand.setJoints(10, 120, 60);
+	hand.setJoints(10, 140, 60);
 
 	hand.setJoints(10, 95, 50);
 
@@ -118,7 +118,7 @@ void factoryLine() {
 
 	usleep(500000);
 
-	hand.setJoints(10, 80, 60);
+	hand.setJoints(10, 140, 60);
 
 	hand.poise();
 }
