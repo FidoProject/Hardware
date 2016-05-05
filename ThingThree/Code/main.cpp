@@ -72,8 +72,7 @@ void proceduralPingPong() {
             usleep(500000);
 		    hand.setJointsUnsafe(0, 180, 40, true);
 		}
-
-	}
+    }
 }
 
 void proceduralDrawing(Hardware *hand) {
@@ -107,9 +106,9 @@ void factoryLine() {
 
 	usleep(500000);
 
-	hand.setJoints(-10, 80, 60);
+	hand.setJoints(-10, 120, 60);
 
-	hand.setJoints(10, 80, 60);
+	hand.setJoints(10, 120, 60);
 
 	hand.setJoints(10, 95, 50);
 
@@ -126,5 +125,5 @@ void factoryLine() {
 
 int main() {
 	srand(time(NULL));
-    proceduralPingPong();
+    factoryLine();
 }
