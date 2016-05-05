@@ -56,28 +56,28 @@ void proceduralPingPong() {
 	while (true) {
 		double l = 0, r = 0;
 		const int NUM_READINGS = 1;
-        for(int a = 0; a < NUM_READINGS; a++) {
-            int tempL, tempR;
-            hand.getSonars(&tempL, &tempR);
-            l += tempL;
-            r += tempR;
-        }
-        l /= double(NUM_READINGS);
-        r /= double(NUM_READINGS);
-
-        std::cout << l << " " << r << "\n";
-		
-        if (fabs(r-l) > THRESH) {  
-		    hand.setJointsUnsafe((r > l ? 1 : -1)*30, 180, 40, true);
-            usleep(500000);
-		    hand.setJointsUnsafe(0, 180, 40, true);
+		for(int a = 0; a < NUM_READINGS; a++) {
+				int tempL, tempR;
+				hand.getSonars(&tempL, &tempR);
+				l += tempL;
+				r += tempR;
 		}
-    }
+		l /= double(NUM_READINGS);
+		r /= double(NUM_READINGS);
+
+		std::cout << l << " " << r << "\n";
+
+		if (fabs(r-l) > THRESH) {
+			hand.setJointsUnsafe((r > l ? 1 : -1)*30, 180, 40, true);
+					usleep(500000);
+			hand.setJointsUnsafe(0, 180, 40, true);
+		}
+	}
 }
 
 void proceduralDrawing(Hardware *hand) {
 	hand->setJoints(-6, 95, 50);
-    usleep(500000);
+		usleep(500000);
 	hand->setJoints(6, 95, 50);
 	usleep(500000);
 	hand->setJoints(6, 100, 30);
@@ -85,7 +85,7 @@ void proceduralDrawing(Hardware *hand) {
 	hand->setJoints(-6, 100, 30);
 	usleep(500000);
 	hand->setJoints(-6, 95, 50);
-    usleep(500000);
+		usleep(500000);
 	hand->poise();
 }
 
@@ -125,5 +125,5 @@ void factoryLine() {
 
 int main() {
 	srand(time(NULL));
-    factoryLine();
+		factoryLine();
 }
