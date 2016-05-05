@@ -66,8 +66,8 @@ void proceduralPingPong() {
         r /= double(NUM_READINGS);
 
         std::cout << l << " " << r << "\n";
-		
-        if (fabs(r-l) > THRESH) {  
+
+        if (fabs(r-l) > THRESH) {
 		    hand.setJointsUnsafe((r > l ? 1 : -1)*30, 180, 40, true);
             usleep(500000);
 		    hand.setJointsUnsafe(0, 180, 40, true);
@@ -114,7 +114,7 @@ void factoryLine() {
 
 	usleep(500000);
 
-	hand.gripper(0.6);
+	hand.gripperGradient(0.6);
 
 	usleep(500000);
 
