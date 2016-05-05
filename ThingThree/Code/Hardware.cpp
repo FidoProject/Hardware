@@ -121,6 +121,12 @@ void Hardware::gripper(bool open) {
 	}
 }
 
+void Hardware::gripperGradient(double openness) {
+	int servoVal = (openness*300.0)+500;
+	moveJoint(4,servoVal);
+	moveJoint(5,1024-servoVal);
+}
+
 bool Hardware::setJointsUnsafe(double i, double j, double k, bool override /* = false */) {
 	double x, y, z;
 	forwardKinematicsXY(i, j, k, &x, &y, &z);

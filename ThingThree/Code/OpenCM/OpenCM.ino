@@ -16,7 +16,7 @@ void gripper(boolean open) {
 		Dxl.goalPosition(5,1024-GRIPPER_OPEN);
 	} else {
 		Dxl.goalPosition(4,GRIPPER_CLOSED);
-		Dxl.goalPosition(5,1024-GRIPPER_CLOSED);		
+		Dxl.goalPosition(5,1024-GRIPPER_CLOSED);
 	}
 }
 
@@ -33,14 +33,14 @@ void setup() {
 	for (int id=1; id<6; id++) {
 		Dxl.jointMode(id);
 		Dxl.ledOn(id);
-	} 
+	}
 
 	Dxl.writeWord(BROADCAST_ID,11,100);
 
 	Dxl.goalPosition(1, START_1);
 	Dxl.goalPosition(2, START_2);
 	Dxl.goalPosition(3, START_3);
-	
+
 	for (int i=0; i<5; i++) {
 		gripper(i%2);
 		delay(500);
@@ -54,27 +54,27 @@ byte blockingRead() {
 
 boolean readInt(int *outVal) {
 	byte inBuffer[sizeof(short)];
-	
+
 
 	for (int i=0; i<sizeof(short); i++) {
 		inBuffer[i] = blockingRead();
 	}
-	
-	*outVal = *((short*)inBuffer);	
-	return true; 
+
+	*outVal = *((short*)inBuffer);
+	return true;
 }
 
 void processWrite(byte cmd, byte id) {
 	int val;
 	readInt(&val);
 
-  	switch (cmd) { 
+  	switch (cmd) {
 		case 's': { // set speed
 			Dxl.goalSpeed(id, val);
 			break;
 		} case 'p': { // move to position
 			Dxl.goalPosition(id, val);
-			break; 
+			break;
 		} case 'o': {
 			gripper(true);
 			break;
@@ -85,11 +85,11 @@ void processWrite(byte cmd, byte id) {
 			Dxl.maxTorque(id,val);
 			break;
 		} case 'g': { // general write command
-			int add; 
-			if (!readInt(&add)) break; 
+			int add;
+			if (!readInt(&add)) break;
 			Dxl.writeWord(id, add, val);
 			break;
-		
+
 			// examples of using writeWord()
 			//Dxl.writeWord(id, 30, val); //move to Goal Position
 			//Dxl.writeWord(id, 32, val); //move at Speed
@@ -120,15 +120,15 @@ void processRead(byte cmd, byte id) {
 			break;
 		} case 'v': {
 			digitalWrite(SONAR_TRIGGER, HIGH);
-  			delay(10);
-  			
+  			delay(1);
+			digitalWrite(SONAR_TRIGGER, LOW);
+
   			int sonarOne = analogRead(SONAR_LEFT);
-    			int sonarTwo = analogRead(SONAR_RIGHT);
-  
+    		int sonarTwo = analogRead(SONAR_RIGHT);
+
   			Serial2.println(sonarOne);
   			Serial2.println(sonarTwo);
-  
-			digitalWrite(SONAR_TRIGGER, LOW);
+			
 			break;
 		}
 	}
@@ -145,5 +145,3 @@ void loop() {
 		else processRead(cmd, id);
 	}
 }
-
-

@@ -13,6 +13,7 @@ public:
 	void poise();
 	void clap(int claps);
 	void gripper(bool open);
+	void gripperGradient(double openness);
 
 	bool setEffectorPosition(double theta, double x, double y);
 	bool setJointsUnsafe(double i, double j, double k, bool override = false);
