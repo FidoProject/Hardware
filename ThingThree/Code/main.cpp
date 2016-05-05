@@ -67,7 +67,7 @@ void proceduralPingPong() {
         r /= double(NUM_READINGS);
 
         std::cout << l << ", " << r << "\n";
-		
+
         int delay = 0;
 		double i = 0;
 		if (fabs(r-l) > THRESH) {
@@ -116,9 +116,9 @@ void factoryLine() {
 
 	usleep(500000);
 
-	hand.setJoints(-10, 80, 60);
+	hand.setJoints(-10, 120, 60);
 
-	hand.setJoints(10, 80, 60);
+	hand.setJoints(10, 120, 60);
 
 	hand.setJoints(10, 95, 50);
 
